@@ -1,0 +1,7 @@
+{
+  "version": 2,
+  "projects": {
+    "ngx-doc-gen-demo": "apps/ngx-doc-gen-demo",
+    "ngx-doc-gen-demo-e2e": "apps/ngx-doc-gen-demo-e2e"
+  }
+}
