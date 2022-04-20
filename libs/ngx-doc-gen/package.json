@@ -1,0 +1,21 @@
+{
+  "name": "ngx-doc-gen",
+  "version": "1.0.0",
+  "description": "Automagically generate your Angular documentation.",
+  "main": "index.js",
+  "keywords": [],
+  "author": {
+    "name": "bohoffi",
+    "email": "bo.hoffi@gmail.com",
+    "url": "https://bohoffi.github.io/"
+  },
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bohoffi/ngx-doc-gen.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bohoffi/ngx-doc-gen/issues"
+  },
+  "homepage": "https://github.com/bohoffi/ngx-doc-gen#readme"
+}
