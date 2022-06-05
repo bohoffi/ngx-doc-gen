@@ -1,0 +1,46 @@
+{
+  "projectType": "library",
+  "root": "libs/single-entrypoint",
+  "sourceRoot": "libs/single-entrypoint/src",
+  "prefix": "ngx-doc-gen",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/angular:package",
+      "outputs": [
+        "dist/libs/single-entrypoint"
+      ],
+      "options": {
+        "project": "libs/single-entrypoint/ng-package.json"
+      },
+      "configurations": {
+        "production": {
+          "tsConfig": "libs/single-entrypoint/tsconfig.lib.prod.json"
+        },
+        "development": {
+          "tsConfig": "libs/single-entrypoint/tsconfig.lib.json"
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": [
+        "coverage/libs/single-entrypoint"
+      ],
+      "options": {
+        "jestConfig": "libs/single-entrypoint/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/single-entrypoint/src/**/*.ts",
+          "libs/single-entrypoint/src/**/*.html"
+        ]
+      }
+    }
+  },
+  "tags": []
+}

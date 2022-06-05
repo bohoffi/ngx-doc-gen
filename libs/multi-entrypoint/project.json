@@ -1,0 +1,46 @@
+{
+  "projectType": "library",
+  "root": "libs/multi-entrypoint",
+  "sourceRoot": "libs/multi-entrypoint/src",
+  "prefix": "ngx-doc-gen",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/angular:package",
+      "outputs": [
+        "dist/libs/multi-entrypoint"
+      ],
+      "options": {
+        "project": "libs/multi-entrypoint/ng-package.json"
+      },
+      "configurations": {
+        "production": {
+          "tsConfig": "libs/multi-entrypoint/tsconfig.lib.prod.json"
+        },
+        "development": {
+          "tsConfig": "libs/multi-entrypoint/tsconfig.lib.json"
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": [
+        "coverage/libs/multi-entrypoint"
+      ],
+      "options": {
+        "jestConfig": "libs/multi-entrypoint/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/multi-entrypoint/src/**/*.ts",
+          "libs/multi-entrypoint/src/**/*.html"
+        ]
+      }
+    }
+  },
+  "tags": []
+}
