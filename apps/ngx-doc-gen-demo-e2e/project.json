@@ -17,12 +17,18 @@
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
-      "outputs": ["{options.outputFile}"],
+      "outputs": [
+        "{options.outputFile}"
+      ],
       "options": {
-        "lintFilePatterns": ["apps/ngx-doc-gen-demo-e2e/**/*.{js,ts}"]
+        "lintFilePatterns": [
+          "apps/ngx-doc-gen-demo-e2e/**/*.{js,ts}"
+        ]
       }
     }
   },
   "tags": [],
-  "implicitDependencies": ["ngx-doc-gen-demo"]
+  "implicitDependencies": [
+    "ngx-doc-gen-demo"
+  ]
 }
