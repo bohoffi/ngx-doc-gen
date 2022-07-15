@@ -6,7 +6,9 @@
   "targets": {
     "build": {
       "executor": "@angular-devkit/build-angular:browser",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
         "outputPath": "dist/apps/ngx-doc-gen-demo",
         "index": "apps/ngx-doc-gen-demo/src/index.html",
@@ -18,7 +20,9 @@
           "apps/ngx-doc-gen-demo/src/favicon.ico",
           "apps/ngx-doc-gen-demo/src/assets"
         ],
-        "styles": ["apps/ngx-doc-gen-demo/src/styles.scss"],
+        "styles": [
+          "apps/ngx-doc-gen-demo/src/styles.scss"
+        ],
         "scripts": []
       },
       "configurations": {
@@ -83,7 +87,9 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/apps/ngx-doc-gen-demo"],
+      "outputs": [
+        "coverage/apps/ngx-doc-gen-demo"
+      ],
       "options": {
         "jestConfig": "apps/ngx-doc-gen-demo/jest.config.js",
         "passWithNoTests": true
