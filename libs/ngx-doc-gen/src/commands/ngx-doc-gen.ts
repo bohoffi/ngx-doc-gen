@@ -1,5 +1,6 @@
 import type { Arguments } from 'yargs';
 import yargs from 'yargs';
+import * as engine from '../generate/dgeni-engine';
 import { NgxDocGenConfig } from '../schema/ngx-doc-gen-config';
 
 export const command: string[] = ['generate', '$0'];
@@ -26,26 +27,30 @@ export const builder = (yargs: yargs.Argv<NgxDocGenConfig>): yargs.Argv =>
         type: 'string',
         default: './docs',
         normalize: true
-      },
-      templatePath: {
-        type: 'string',
-        normalize: true
       }
     });
 
-export const handler = (argv: Arguments<NgxDocGenConfig>): void => {
+export const handler = async (argv: Arguments<NgxDocGenConfig>): Promise<void> => {
   const config: NgxDocGenConfig = {
     basePath: argv.basePath,
     packageName: argv.packageName,
     logLevel: argv.logLevel,
-    outputPath: argv.outputPath,
-    templatePath: argv.templatePath,
+    outputPath: argv.outputPath
   };
+  const workingDirectory = process.cwd();
+  const currentDirectory = __dirname;
 
-  process.stdout.write(`basePath: ${config.basePath}\n`);
-  process.stdout.write(`packageName: ${config.packageName}\n`);
-  process.stdout.write(`logLevel: ${config.logLevel}\n`);
-  process.stdout.write(`outputPath: ${config.outputPath}\n`);
-  process.stdout.write(`templatePath: ${config.templatePath}\n`);
+  await engine.generate(config, workingDirectory);
+
   process.exit(0);
+
+  // engine.generate(config, workingDirectory)
+  //   .catch((e: any) => {
+  //     process.stdout.write(e);
+  //     process.exit(1);
+  //   })
+  //   .then(() => {
+  //     process.stdout.write('DONE\n');
+  //     process.exit(0);
+  //   });
 };

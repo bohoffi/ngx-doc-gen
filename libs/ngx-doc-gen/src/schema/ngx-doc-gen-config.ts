@@ -5,5 +5,4 @@ export interface NgxDocGenConfig {
   logLevel?: LogLevel;
   outputPath?: string;
   packageName?: string;
-  templatePath?: string;
 }
