@@ -1,7 +1,10 @@
+import { stdout } from 'process';
 import type { Arguments } from 'yargs';
 import yargs from 'yargs';
 import * as engine from '../generate/dgeni-engine';
 import { NgxDocGenConfig } from '../schema/ngx-doc-gen-config';
+import chalk from 'chalk';
+import { EOL } from 'os';
 
 export const command: string[] = ['generate', '$0'];
 export const desc: string = 'Automagically generate your Angular documentation';
@@ -46,11 +49,12 @@ export const handler = async (argv: Arguments<NgxDocGenConfig>): Promise<void> =
 
   engine.generate(config, workingDirectory)
     .catch((e: any) => {
-      process.stdout.write(e);
+      process.stdout.write(chalk.red(e));
       process.exit(1);
     })
-    .then(() => {
-      process.stdout.write('DONE\n');
+    .then(packageName => {
+      process.stdout.write(chalk.green(`Successfully generated documentation for ${packageName}${EOL}${EOL}`));
+
       process.exit(0);
     });
 };
