@@ -10,9 +10,9 @@
     "test": "nx test",
     "cleanup": "rm -f -r ./docs",
     "ngx-doc-gen:build": "rm -f -r ./dist/libs/ngx-doc-gen && npx tsc -p ./libs/ngx-doc-gen/tsconfig.json",
-    "ngx-doc-gen:copy-templates": "cp -r ./libs/ngx-doc-gen/src/templates ./dist/libs/ngx-doc-gen",
+    "ngx-doc-gen:copy-assets": "cp -r ./libs/ngx-doc-gen/src/templates ./dist/libs/ngx-doc-gen && cp -r ./libs/ngx-doc-gen/package.json ./dist/libs/ngx-doc-gen && cp ./LICENSE ./dist/libs/ngx-doc-gen",
     "ngx-doc-gen:permissions": "chmod u+x ./dist/libs/ngx-doc-gen/cli.js",
-    "ngx-doc-gen:test_run": "npm run cleanup && npm run ngx-doc-gen:build && npm run ngx-doc-gen:copy-templates && npm run ngx-doc-gen:permissions && ./dist/libs/ngx-doc-gen/cli.js -b ./libs/single-entrypoint"
+    "ngx-doc-gen:test_run": "npm run cleanup && npm run ngx-doc-gen:build && npm run ngx-doc-gen:copy-assets && npm run ngx-doc-gen:permissions && ./dist/libs/ngx-doc-gen/cli.js -b ./libs/single-entrypoint"
   },
   "private": true,
   "dependencies": {
