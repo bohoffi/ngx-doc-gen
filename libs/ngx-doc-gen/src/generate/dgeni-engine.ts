@@ -19,12 +19,12 @@ import { collectEntrypoints, createDgeniPackage } from '../utils/package-utils';
 import { patchLogService } from '../utils/patch-log-service';
 var path = require('canonical-path');
 
-export const generate = async (config: NgxDocGenConfig, workingDirectory: string): Promise<any> => {
+export const generate = async (config: NgxDocGenConfig, workingDirectory: string): Promise<string> => {
   const ngPackage = await discoverNgPackage(workingDirectory, config.basePath);
   return await generateDocumentation(ngPackage, workingDirectory, config);
 };
 
-const generateDocumentation = async (ngPackge: NgPackage, workingDirectory: string, config: NgxDocGenConfig): Promise<any> => {
+const generateDocumentation = async (ngPackge: NgPackage, workingDirectory: string, config: NgxDocGenConfig): Promise<string> => {
   const outputDir = path.join(workingDirectory, config?.outputPath);
   const dgeniPackage = createDgeniPackage(config.packageName ?? ngPackge.packageName);
 
@@ -40,7 +40,9 @@ const generateDocumentation = async (ngPackge: NgPackage, workingDirectory: stri
   configureTemplateEngine(dgeniPackage);
   configureTypeScriptModule(dgeniPackage, ngPackge, outputDir, workingDirectory);
 
-  return await new Dgeni([dgeniPackage]).generate();
+  return await new Dgeni([dgeniPackage])
+    .generate()
+    .then(() => ngPackge.packageName);
 };
 
 /**
