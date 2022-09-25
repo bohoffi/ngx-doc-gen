@@ -2,8 +2,16 @@
   "name": "ngx-doc-gen",
   "version": "1.0.0",
   "description": "Automagically generate your Angular documentation.",
-  "main": "index.js",
-  "keywords": [],
+  "main": "cli.js",
+  "bin": {
+    "ngx-doc-gen": "cli.js"
+  },
+  "keywords": [
+    "angular",
+    "documentation",
+    "generation",
+    "cli"
+  ],
   "author": {
     "name": "bohoffi",
     "email": "bo.hoffi@gmail.com",
