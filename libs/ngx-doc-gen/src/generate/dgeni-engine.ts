@@ -10,8 +10,8 @@ import { DocsPrivateFilter } from '../processors/docs-private-filter';
 import { EntryPointGrouper } from '../processors/entry-point-grouper';
 import { ErrorUnknownJsdocTagsProcessor } from '../processors/error-unknown-jsdoc-tags';
 import { FilterDuplicateExports } from '../processors/filter-duplicate-exports';
-import { mergeInheritedProperties } from '../processors/merge-inherited-properties';
-import { resolveInheritedDocs } from '../processors/resolve-inherited-docs';
+import { MergeInheritedProperties, mergeInheritedProperties } from '../processors/merge-inherited-properties';
+import { ResolveInheritedDocs, resolveInheritedDocs } from '../processors/resolve-inherited-docs';
 import { NgxDocGenConfig } from '../schema/ngx-doc-gen-config';
 import { LogLevel } from '../types/log-level';
 import { discoverNgPackage } from '../utils/discovery';
@@ -21,11 +21,6 @@ var path = require('canonical-path');
 
 export const generate = async (config: NgxDocGenConfig, workingDirectory: string): Promise<any> => {
   const ngPackage = await discoverNgPackage(workingDirectory, config.basePath);
-
-  // console.log(`ngPackage:\n`);
-  // console.log(ngPackage);
-  // console.log(`\n`);
-
   return await generateDocumentation(ngPackage, workingDirectory, config);
 };
 
@@ -33,11 +28,9 @@ const generateDocumentation = async (ngPackge: NgPackage, workingDirectory: stri
   const outputDir = path.join(workingDirectory, config?.outputPath);
   const dgeniPackage = createDgeniPackage(config.packageName ?? ngPackge.packageName);
 
-  // console.log(`dgeniPackage:\n`);
-  // console.log(dgeniPackage);
-  // console.log(`\n`);
-
   setProcessors(dgeniPackage);
+
+  configureExcludeBase(dgeniPackage, config.excludeBase);
 
   configureLogging(dgeniPackage, config.logLevel);
   disbableNativeReadFilesProcessor(dgeniPackage);
@@ -47,13 +40,7 @@ const generateDocumentation = async (ngPackge: NgPackage, workingDirectory: stri
   configureTemplateEngine(dgeniPackage);
   configureTypeScriptModule(dgeniPackage, ngPackge, outputDir, workingDirectory);
 
-  const artifact = await new Dgeni([dgeniPackage]).generate();
-  console.log(`artifact:\n`);
-  console.log(artifact);
-  console.log(`\n`);
-
-  // return await new Dgeni([dgeniPackage]).generate();
-  return artifact;
+  return await new Dgeni([dgeniPackage]).generate();
 };
 
 /**
@@ -72,6 +59,8 @@ const setProcessors = (dgeniPackage: Package): void => {
   // Note: needs to use a factory function since the processor relies on DI.
   dgeniPackage.processor(mergeInheritedProperties);
 
+
+
   // Processor that filters out symbols that should not be shown in the docs.
   dgeniPackage.processor(new DocsPrivateFilter());
 
@@ -87,6 +76,13 @@ const setProcessors = (dgeniPackage: Package): void => {
   // Processor that marks asynchronous methods. Additionally, automatically adds a return
   // description for async methods which do not return any value.
   dgeniPackage.processor(new AsyncFunctionsProcessor());
+};
+
+const configureExcludeBase = (dgeniPackage: Package, excludeBase?: string[]): void => {
+  dgeniPackage.config(function (resolveInheritedDocs: ResolveInheritedDocs, mergeInheritedProperties: MergeInheritedProperties) {
+    resolveInheritedDocs.excludeBase = excludeBase || [];
+    mergeInheritedProperties.excludeBase = excludeBase || [];
+  });
 };
 
 const configureLogging = (dgeniPackage: Package, logLevel: LogLevel): void => {

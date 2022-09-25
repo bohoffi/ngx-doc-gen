@@ -27,6 +27,10 @@ export const builder = (yargs: yargs.Argv<NgxDocGenConfig>): yargs.Argv =>
         type: 'string',
         default: './docs',
         normalize: true
+      },
+      excludeBase: {
+        type: 'array',
+        default: []
       }
     });
 
@@ -35,22 +39,18 @@ export const handler = async (argv: Arguments<NgxDocGenConfig>): Promise<void> =
     basePath: argv.basePath,
     packageName: argv.packageName,
     logLevel: argv.logLevel,
-    outputPath: argv.outputPath
+    outputPath: argv.outputPath,
+    excludeBase: argv.excludeBase || [] as string[]
   };
   const workingDirectory = process.cwd();
-  const currentDirectory = __dirname;
 
-  await engine.generate(config, workingDirectory);
-
-  process.exit(0);
-
-  // engine.generate(config, workingDirectory)
-  //   .catch((e: any) => {
-  //     process.stdout.write(e);
-  //     process.exit(1);
-  //   })
-  //   .then(() => {
-  //     process.stdout.write('DONE\n');
-  //     process.exit(0);
-  //   });
+  engine.generate(config, workingDirectory)
+    .catch((e: any) => {
+      process.stdout.write(e);
+      process.exit(1);
+    })
+    .then(() => {
+      process.stdout.write('DONE\n');
+      process.exit(0);
+    });
 };

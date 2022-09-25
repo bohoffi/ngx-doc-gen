@@ -1,9 +1,9 @@
-import {DocCollection, Processor} from 'dgeni';
-import {ClassExportDoc} from 'dgeni-packages/typescript/api-doc-types/ClassExportDoc';
-import {ClassLikeExportDoc} from 'dgeni-packages/typescript/api-doc-types/ClassLikeExportDoc';
-import {MemberDoc} from 'dgeni-packages/typescript/api-doc-types/MemberDoc';
+import { DocCollection, Processor } from 'dgeni';
+import { ClassExportDoc } from 'dgeni-packages/typescript/api-doc-types/ClassExportDoc';
+import { ClassLikeExportDoc } from 'dgeni-packages/typescript/api-doc-types/ClassLikeExportDoc';
+import { MemberDoc } from 'dgeni-packages/typescript/api-doc-types/MemberDoc';
 import ts from 'typescript';
-import {getInheritedDocsOfClass} from '../common/class-inheritance';
+import { getInheritedDocsOfClass } from '../common/class-inheritance';
 
 /**
  * Factory function for the "MergeInheritedProperties" processor. Dgeni does not support
@@ -23,10 +23,12 @@ export function mergeInheritedProperties(
 export class MergeInheritedProperties implements Processor {
   $runBefore = ['categorizer'];
 
+  public excludeBase: string[] = [];
+
   constructor(
     /** Shared map that can be used to resolve docs through symbols. */
     private _exportSymbolsToDocsMap: Map<ts.Symbol, ClassLikeExportDoc>,
-  ) {}
+  ) { }
 
   $process(docs: DocCollection) {
     return docs
@@ -37,14 +39,16 @@ export class MergeInheritedProperties implements Processor {
   private _addInheritedProperties(doc: ClassExportDoc) {
     // Note that we need to get check all base documents. We cannot assume
     // that directive base documents already have merged inherited members.
-    getInheritedDocsOfClass(doc, this._exportSymbolsToDocsMap).forEach(d => {
-      d.members.forEach(member => {
-        // only add inherited class members which are not "protected" or "private".
-        if (member.accessibility === 'public') {
-          this._addMemberDocIfNotPresent(doc, member);
-        }
+    getInheritedDocsOfClass(doc, this._exportSymbolsToDocsMap)
+      .filter(d => !this.excludeBase.includes(d.name))
+      .forEach(d => {
+        d.members.forEach(member => {
+          // only add inherited class members which are not "protected" or "private".
+          if (member.accessibility === 'public') {
+            this._addMemberDocIfNotPresent(doc, member);
+          }
+        });
       });
-    });
   }
 
   private _addMemberDocIfNotPresent(destination: ClassExportDoc, memberDoc: MemberDoc) {

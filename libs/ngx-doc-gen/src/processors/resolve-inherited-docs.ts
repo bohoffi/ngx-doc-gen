@@ -1,9 +1,9 @@
-import {DocCollection, Document, Processor} from 'dgeni';
-import {ClassLikeExportDoc} from 'dgeni-packages/typescript/api-doc-types/ClassLikeExportDoc';
+import { DocCollection, Document, Processor } from 'dgeni';
+import { ClassLikeExportDoc } from 'dgeni-packages/typescript/api-doc-types/ClassLikeExportDoc';
 import ts from 'typescript';
-import {getInheritedDocsOfClass, isInheritanceCreatedDoc} from '../common/class-inheritance';
-import {ClassExportDoc} from 'dgeni-packages/typescript/api-doc-types/ClassExportDoc';
-import {ApiDoc} from 'dgeni-packages/typescript/api-doc-types/ApiDoc';
+import { getInheritedDocsOfClass, isInheritanceCreatedDoc } from '../common/class-inheritance';
+import { ClassExportDoc } from 'dgeni-packages/typescript/api-doc-types/ClassExportDoc';
+import { ApiDoc } from 'dgeni-packages/typescript/api-doc-types/ApiDoc';
 
 /**
  * Factory function for the "ResolvedInheritedDocs" processor. Dgeni does not support
@@ -27,10 +27,12 @@ export function resolveInheritedDocs(exportSymbolsToDocsMap: Map<ts.Symbol, Clas
 export class ResolveInheritedDocs implements Processor {
   $runBefore = ['docs-private-filter', 'parsing-tags'];
 
+  public excludeBase: string[] = [];
+
   constructor(
     /** Shared map that can be used to resolve docs through symbols. */
     private _exportSymbolsToDocsMap: Map<ts.Symbol, ClassLikeExportDoc>,
-  ) {}
+  ) { }
 
   $process(docs: DocCollection) {
     const newDocs = new Set<Document>(docs);
@@ -40,18 +42,20 @@ export class ResolveInheritedDocs implements Processor {
         return;
       }
 
-      getInheritedDocsOfClass(doc, this._exportSymbolsToDocsMap).forEach(apiDoc => {
-        // If the API document has not been resolved through inheritance, then it is already
-        // part of the Dgeni doc collection. i.e. The doc already been resolved through Dgeni
-        // itself (which happens if the doc is exported through an entry-point).
-        if (!isInheritanceCreatedDoc(apiDoc)) {
-          return;
-        }
-        // Add the member docs for the inherited doc to the Dgeni doc collection.
-        this._getContainingMemberDocs(apiDoc).forEach(d => newDocs.add(d));
-        // Add the class-like export doc to the Dgeni doc collection.
-        newDocs.add(apiDoc);
-      });
+      getInheritedDocsOfClass(doc, this._exportSymbolsToDocsMap)
+        .filter(d => !this.excludeBase.includes(d.name))
+        .forEach(apiDoc => {
+          // If the API document has not been resolved through inheritance, then it is already
+          // part of the Dgeni doc collection. i.e. The doc already been resolved through Dgeni
+          // itself (which happens if the doc is exported through an entry-point).
+          if (!isInheritanceCreatedDoc(apiDoc)) {
+            return;
+          }
+          // Add the member docs for the inherited doc to the Dgeni doc collection.
+          this._getContainingMemberDocs(apiDoc).forEach(d => newDocs.add(d));
+          // Add the class-like export doc to the Dgeni doc collection.
+          newDocs.add(apiDoc);
+        });
     });
 
     return Array.from(newDocs);
