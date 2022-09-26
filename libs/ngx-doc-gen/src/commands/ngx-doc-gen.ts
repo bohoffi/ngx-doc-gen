@@ -1,4 +1,3 @@
-import { stdout } from 'process';
 import type { Arguments } from 'yargs';
 import yargs from 'yargs';
 import * as engine from '../generate/dgeni-engine';

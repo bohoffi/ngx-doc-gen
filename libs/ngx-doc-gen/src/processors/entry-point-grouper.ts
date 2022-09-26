@@ -4,7 +4,6 @@ import { ConstExportDoc } from 'dgeni-packages/typescript/api-doc-types/ConstExp
 import { FunctionExportDoc } from 'dgeni-packages/typescript/api-doc-types/FunctionExportDoc';
 import { InterfaceExportDoc } from 'dgeni-packages/typescript/api-doc-types/InterfaceExportDoc';
 import { TypeAliasExportDoc } from 'dgeni-packages/typescript/api-doc-types/TypeAliasExportDoc';
-import * as path from 'path';
 import { computeApiDocumentUrl } from '../common/compute-api-url';
 import { isDeprecatedDoc, isPrimaryExportDoc } from '../common/decorators';
 import { CategorizedClassDoc } from '../common/dgeni-definitions';
