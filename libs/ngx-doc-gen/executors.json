@@ -1,0 +1,17 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "executors": {
+    "generate": {
+      "implementation": "./src/executors/generate/executor",
+      "schema": "./src/schema/doc-schema.json",
+      "description": "Automatically generate Angular library documentation"
+    }
+  },
+  "builders": {
+    "generate": {
+      "implementation": "./src/executors/generate/compat",
+      "schema": "./src/schema/doc-schema.json",
+      "description": "Automatically generate Angular library documentation"
+    }
+  }
+}

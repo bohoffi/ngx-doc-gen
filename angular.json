@@ -2,6 +2,7 @@
   "version": 2,
   "projects": {
     "multi-entrypoint": "libs/multi-entrypoint",
+    "ngx-doc-gen": "libs/ngx-doc-gen",
     "ngx-doc-gen-demo": "apps/ngx-doc-gen-demo",
     "ngx-doc-gen-demo-e2e": "apps/ngx-doc-gen-demo-e2e",
     "single-entrypoint": "libs/single-entrypoint"
