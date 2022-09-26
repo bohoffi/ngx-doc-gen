@@ -1,0 +1,49 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "Schema",
+  "type": "object",
+  "title": "NgxDocGenOptions",
+  "description": "Automatically generate Angular library documentation",
+  "properties": {
+    "logLevel": {
+      "description": "Configures the Dgeni log output. Defaults to `warn`.",
+      "type": "string",
+      "default": "warn",
+      "enum": [
+        "error",
+        "warn",
+        "debug",
+        "verbose"
+      ],
+      "aliases": [
+        "l"
+      ]
+    },
+    "outputPath": {
+      "description": "Configures the output directory for the generated documentation. Default to `docs`.",
+      "type": "string",
+      "default": "docs",
+      "aliases": [
+        "o"
+      ]
+    },
+    "excludeBase": {
+      "description": "A list of base classes to exclude from generating (e.g. 'Observable').",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "aliases": [
+        "e"
+      ]
+    },
+    "dryRun": {
+      "type": "boolean",
+      "default": false,
+      "aliases": [
+        "d"
+      ],
+      "description": "Run through and reports activity without writing out results."
+    }
+  }
+}

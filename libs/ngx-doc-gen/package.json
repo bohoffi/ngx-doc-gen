@@ -2,15 +2,17 @@
   "name": "ngx-doc-gen",
   "version": "0.0.0",
   "description": "Automagically generate your Angular documentation.",
-  "main": "cli.js",
-  "bin": {
-    "ngx-doc-gen": "cli.js"
-  },
+  "builders": "./executors.json",
+  "executors": "./executors.json",
   "keywords": [
     "angular",
     "documentation",
     "generation",
-    "cli"
+    "dgeni",
+    "nx",
+    "nx-plugin",
+    "cli",
+    "angular-cli"
   ],
   "author": {
     "name": "bohoffi",
@@ -27,15 +29,13 @@
   },
   "homepage": "https://github.com/bohoffi/ngx-doc-gen#readme",
   "dependencies": {
+    "@nrwl/devkit": ">= 13.0.0",
     "canonical-path": "^1.0.0",
-    "chalk": "^4.1.2",
     "dgeni": "^0.4.14",
     "dgeni-packages": "^0.30.0",
     "fast-glob": "^3.2.11",
     "fs-extra": "^10.1.0",
     "highlight.js": "^11.5.1",
-    "jsonc-parser": "^3.0.0",
-    "os": "^0.1.2",
-    "yargs": "^17.4.1"
+    "jsonc-parser": "^3.0.0"
   }
 }

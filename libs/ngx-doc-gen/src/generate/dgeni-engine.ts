@@ -12,27 +12,27 @@ import { ErrorUnknownJsdocTagsProcessor } from '../processors/error-unknown-jsdo
 import { FilterDuplicateExports } from '../processors/filter-duplicate-exports';
 import { MergeInheritedProperties, mergeInheritedProperties } from '../processors/merge-inherited-properties';
 import { ResolveInheritedDocs, resolveInheritedDocs } from '../processors/resolve-inherited-docs';
-import { NgxDocGenConfig } from '../schema/ngx-doc-gen-config';
+import { NgxDocGenOptions } from '../schema/ngx-doc-gen.options';
 import { LogLevel } from '../types/log-level';
 import { discoverNgPackage } from '../utils/discovery';
 import { collectEntrypoints, createDgeniPackage } from '../utils/package-utils';
 import { patchLogService } from '../utils/patch-log-service';
 var path = require('canonical-path');
 
-export const generate = async (config: NgxDocGenConfig, workingDirectory: string): Promise<string> => {
-  const ngPackage = await discoverNgPackage(workingDirectory, config.basePath);
-  return await generateDocumentation(ngPackage, workingDirectory, config);
+export const generate = async (options: NgxDocGenOptions, workingDirectory: string, projectRoot: string): Promise<string> => {
+  const ngPackage = await discoverNgPackage(workingDirectory, projectRoot);
+  return await generateDocumentation(ngPackage, workingDirectory, options);
 };
 
-const generateDocumentation = async (ngPackge: NgPackage, workingDirectory: string, config: NgxDocGenConfig): Promise<string> => {
-  const outputDir = path.join(workingDirectory, config?.outputPath);
-  const dgeniPackage = createDgeniPackage(config.packageName ?? ngPackge.packageName);
+const generateDocumentation = async (ngPackge: NgPackage, workingDirectory: string, options: NgxDocGenOptions): Promise<string> => {
+  const outputDir = path.join(workingDirectory, options.outputPath);
+  const dgeniPackage = createDgeniPackage(ngPackge.packageName);
 
   setProcessors(dgeniPackage);
 
-  configureExcludeBase(dgeniPackage, config.excludeBase);
+  configureExcludeBase(dgeniPackage, options.excludeBase);
 
-  configureLogging(dgeniPackage, config.logLevel);
+  configureLogging(dgeniPackage, options.logLevel);
   disbableNativeReadFilesProcessor(dgeniPackage);
   configureComputPathsProcessor(dgeniPackage);
   configureCostumJsDocTags(dgeniPackage);

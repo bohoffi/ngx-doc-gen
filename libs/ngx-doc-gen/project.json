@@ -1,0 +1,50 @@
+{
+  "root": "libs/ngx-doc-gen",
+  "sourceRoot": "libs/ngx-doc-gen/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "options": {
+        "outputPath": "dist/libs/ngx-doc-gen",
+        "tsConfig": "libs/ngx-doc-gen/tsconfig.lib.json",
+        "packageJson": "libs/ngx-doc-gen/package.json",
+        "main": "libs/ngx-doc-gen/src/index.ts",
+        "assets": [
+          {
+            "input": "./",
+            "glob": "LICENSE",
+            "output": "."
+          },
+          {
+            "input": "./",
+            "glob": "README.md",
+            "output": "."
+          },
+          {
+            "input": "./libs/ngx-doc-gen/src",
+            "glob": "**/!(*.ts)",
+            "output": "./src",
+            "ignore": [
+              "**/*.ts"
+            ]
+          },
+          {
+            "input": "./libs/ngx-doc-gen/src",
+            "glob": "**/*.html",
+            "output": "./src"
+          },
+          {
+            "input": "./libs/ngx-doc-gen",
+            "glob": "executors.json",
+            "output": "."
+          }
+        ]
+      }
+    }
+  },
+  "tags": []
+}
