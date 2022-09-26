@@ -25,5 +25,17 @@
   "bugs": {
     "url": "https://github.com/bohoffi/ngx-doc-gen/issues"
   },
-  "homepage": "https://github.com/bohoffi/ngx-doc-gen#readme"
+  "homepage": "https://github.com/bohoffi/ngx-doc-gen#readme",
+  "dependencies": {
+    "canonical-path": "^1.0.0",
+    "chalk": "^4.1.2",
+    "dgeni": "^0.4.14",
+    "dgeni-packages": "^0.30.0",
+    "fast-glob": "^3.2.11",
+    "fs-extra": "^10.1.0",
+    "highlight.js": "^11.5.1",
+    "jsonc-parser": "^3.0.0",
+    "os": "^0.1.2",
+    "yargs": "^17.4.1"
+  }
 }
