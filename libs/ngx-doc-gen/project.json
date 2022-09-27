@@ -49,6 +49,17 @@
           }
         ]
       }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": [
+        "{options.outputFile}"
+      ],
+      "options": {
+        "lintFilePatterns": [
+          "libs/ngx-doc-gen/**/*.ts"
+        ]
+      }
     }
   },
   "tags": []
