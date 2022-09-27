@@ -39,5 +39,8 @@
     "fs-extra": "^10.1.0",
     "highlight.js": "^11.5.1",
     "jsonc-parser": "^3.0.0"
+  },
+  "ng-add": {
+    "save": "devDependencies"
   }
 }
