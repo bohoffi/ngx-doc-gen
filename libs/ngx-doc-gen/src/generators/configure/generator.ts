@@ -1,9 +1,9 @@
 import { formatFiles, GeneratorCallback, getProjects, logger, Tree, updateProjectConfiguration } from '@nrwl/devkit';
-import { InstallGeneratorOptions } from './install-generator.options';
+import { ConfigureGeneratorOptions } from './configure-generator.options';
 
-export default async function install(
+export default async function configure(
   tree: Tree,
-  installOptions: InstallGeneratorOptions
+  installOptions: ConfigureGeneratorOptions
 ): Promise<void | GeneratorCallback> {
 
   logger.info('Fetching workspace projects...');
