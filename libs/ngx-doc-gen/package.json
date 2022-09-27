@@ -4,6 +4,8 @@
   "description": "Automagically generate your Angular documentation.",
   "builders": "./executors.json",
   "executors": "./executors.json",
+  "generators": "./generators.json",
+  "schematics": "./generators.json",
   "keywords": [
     "angular",
     "documentation",
