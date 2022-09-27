@@ -39,7 +39,7 @@ export default async function install(
 
       updateProjectConfiguration(tree, projectName, projectConfiguration);
 
-      logger.info(`✔️ Successfully configured "${projectName}" for documentation generation.`);
+      logger.info(`✅ Successfully configured "${projectName}" for documentation generation.`);
     }
   });
 
