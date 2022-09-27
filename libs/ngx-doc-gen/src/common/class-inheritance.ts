@@ -1,10 +1,10 @@
 // tslint:disable:no-bitwise
 
-import {ApiDoc} from 'dgeni-packages/typescript/api-doc-types/ApiDoc';
-import {ClassExportDoc} from 'dgeni-packages/typescript/api-doc-types/ClassExportDoc';
-import {ClassLikeExportDoc} from 'dgeni-packages/typescript/api-doc-types/ClassLikeExportDoc';
-import {InterfaceExportDoc} from 'dgeni-packages/typescript/api-doc-types/InterfaceExportDoc';
-import {MemberDoc} from 'dgeni-packages/typescript/api-doc-types/MemberDoc';
+import { ApiDoc } from 'dgeni-packages/typescript/api-doc-types/ApiDoc';
+import { ClassExportDoc } from 'dgeni-packages/typescript/api-doc-types/ClassExportDoc';
+import { ClassLikeExportDoc } from 'dgeni-packages/typescript/api-doc-types/ClassLikeExportDoc';
+import { InterfaceExportDoc } from 'dgeni-packages/typescript/api-doc-types/InterfaceExportDoc';
+import { MemberDoc } from 'dgeni-packages/typescript/api-doc-types/MemberDoc';
 
 import ts from 'typescript';
 
@@ -34,7 +34,7 @@ export function getInheritedDocsOfClass(
 ): ClassLikeExportDoc[] {
   const result: ClassLikeExportDoc[] = [];
   const typeChecker = doc.typeChecker;
-  for (let info of doc.extendsClauses) {
+  for (const info of doc.extendsClauses) {
     if (info.doc) {
       result.push(info.doc, ...getInheritedDocsOfClass(info.doc, exportSymbolsToDocsMap));
     } else if (info.type) {
@@ -87,7 +87,7 @@ function getClassLikeDocsFromType(
     // keeps track of all exported symbols and their corresponding docs. See:
     // dgeni-packages/blob/master/typescript/src/processors/linkInheritedDocs.ts
     if (exportSymbolsToDocsMap.has(symbol)) {
-      return [exportSymbolsToDocsMap.get(symbol)!];
+      return [exportSymbolsToDocsMap.get(symbol)];
     }
     let createdDoc: InheritanceCreatedClassLikeDoc | null = null;
     if ((symbol.flags & ts.SymbolFlags.Class) !== 0) {

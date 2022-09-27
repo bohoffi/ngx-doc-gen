@@ -2,7 +2,7 @@ import {
   ParameterContainer,
   ParamTag,
 } from 'dgeni-packages/typescript/api-doc-types/ParameterContainer';
-import {ApiDoc} from 'dgeni-packages/typescript/api-doc-types/ApiDoc';
+import { ApiDoc } from 'dgeni-packages/typescript/api-doc-types/ApiDoc';
 
 export interface NormalizedFunctionParameters {
   params?: FunctionParameterInfo[];
@@ -32,6 +32,7 @@ export type DefaultFunctionDoc = NormalizedFunctionParameters & ParameterContain
 export function normalizeFunctionParameters(doc: DefaultFunctionDoc) {
   if (doc.parameters) {
     doc.parameters.forEach(parameter => {
+      // eslint-disable-next-line prefer-const
       let [parameterName, parameterType] = parameter.split(':');
 
       // If the parameter is optional, the name here will contain a '?'. We store whether the
@@ -47,7 +48,7 @@ export function normalizeFunctionParameters(doc: DefaultFunctionDoc) {
       if (!parameterType) {
         console.warn(
           `Missing parameter type information (${parameterName}) in ` +
-            `${doc.fileInfo.relativePath}:${doc.startingLine}`,
+          `${doc.fileInfo.relativePath}:${doc.startingLine}`,
         );
         return;
       }

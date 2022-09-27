@@ -1,6 +1,7 @@
 import { Dgeni, Package } from 'dgeni';
 import { ReadTypeScriptModules } from 'dgeni-packages/typescript/processors/readTypeScriptModules';
 import { TsParser } from 'dgeni-packages/typescript/services/TsParser';
+import * as path from 'canonical-path';
 
 import { HighlightNunjucksExtension } from '../extensions/nunjucks';
 import { NgPackage } from '../interfaces/ng-package';
@@ -17,7 +18,6 @@ import { LogLevel } from '../types/log-level';
 import { discoverNgPackage } from '../utils/discovery';
 import { collectEntrypoints, createDgeniPackage } from '../utils/package-utils';
 import { patchLogService } from '../utils/patch-log-service';
-var path = require('canonical-path');
 
 export const generate = async (options: NgxDocGenOptions, workingDirectory: string, projectRoot: string): Promise<string> => {
   const ngPackage = await discoverNgPackage(workingDirectory, projectRoot);
@@ -214,7 +214,7 @@ const configureTypeScriptModule = (
 
       entryPointGrouper.entryPoints.push(ep);
 
-      tsParser.options.paths![`${ep.packageJson.name}`] = [entrypointIndexPath];
+      tsParser.options.paths[`${ep.packageJson.name}`] = [entrypointIndexPath];
       readTypeScriptModules.sourceFiles.push(entrypointIndexPath);
     });
 
@@ -226,7 +226,7 @@ const configureTypeScriptModule = (
     // as the Angular packages which might be needed for doc items. e.g. if a class implements
     // the "AfterViewInit" interface from "@angular/core". This needs to be relative to the
     // "baseUrl" that has been specified for the "tsParser" compiler options.
-    tsParser.options.paths!['*'] = [path.join(workingDirectory, 'node_modules/*')];
+    tsParser.options.paths['*'] = [path.join(workingDirectory, 'node_modules/*')];
 
     // Since our base directory is the Bazel execroot, we need to make sure that Dgeni can
     // find all templates needed to output the API docs.

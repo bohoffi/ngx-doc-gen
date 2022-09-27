@@ -1,11 +1,12 @@
-import {ApiDoc} from 'dgeni-packages/typescript/api-doc-types/ApiDoc';
-import {ClassExportDoc} from 'dgeni-packages/typescript/api-doc-types/ClassExportDoc';
-import {MemberDoc} from 'dgeni-packages/typescript/api-doc-types/MemberDoc';
-import {PropertyMemberDoc} from 'dgeni-packages/typescript/api-doc-types/PropertyMemberDoc';
-import {CategorizedClassDoc, DeprecationInfo, HasDecoratorsDoc} from './dgeni-definitions';
-import {findJsDocTag, hasJsDocTag} from './tags';
+import { ApiDoc } from 'dgeni-packages/typescript/api-doc-types/ApiDoc';
+import { ClassExportDoc } from 'dgeni-packages/typescript/api-doc-types/ClassExportDoc';
+import { MemberDoc } from 'dgeni-packages/typescript/api-doc-types/MemberDoc';
+import { PropertyMemberDoc } from 'dgeni-packages/typescript/api-doc-types/PropertyMemberDoc';
+import { CategorizedClassDoc, DeprecationInfo, HasDecoratorsDoc } from './dgeni-definitions';
+import { findJsDocTag, hasJsDocTag } from './tags';
 
 export function isMethod(doc: MemberDoc): boolean {
+  // eslint-disable-next-line no-prototype-builtins
   return doc.hasOwnProperty('parameters') && !doc.isGetAccessor && !doc.isSetAccessor;
 }
 

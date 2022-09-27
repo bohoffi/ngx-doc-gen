@@ -1,5 +1,5 @@
-import {PropertyMemberDoc} from 'dgeni-packages/typescript/api-doc-types/PropertyMemberDoc';
-import {hasMemberDecorator} from './decorators';
+import { PropertyMemberDoc } from 'dgeni-packages/typescript/api-doc-types/PropertyMemberDoc';
+import { hasMemberDecorator } from './decorators';
 
 /** Interface that describes an Angular property binding. Can be either an input or output. */
 export interface PropertyBinding {
@@ -54,7 +54,7 @@ function getBindingPropertyData(
   if (hasMemberDecorator(doc, decoratorName)) {
     return {
       name: doc.name,
-      alias: doc.decorators!.find(d => d.name == decoratorName)!.arguments![0],
+      alias: (doc.decorators.find(d => d.name == decoratorName).arguments || ['']).at(0),
     };
   }
 

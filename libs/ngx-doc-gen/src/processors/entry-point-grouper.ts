@@ -112,7 +112,7 @@ export class EntryPointGrouper implements Processor {
       // Get the entry-point for this doc, or, if one does not exist, create it.
       let entryPoint: EntryPointDoc;
       if (entryPoints.has(entryPointName)) {
-        entryPoint = entryPoints.get(entryPointName)!;
+        entryPoint = entryPoints.get(entryPointName);
       } else {
         entryPoint = new EntryPointDoc(entryPointName);
         entryPoints.set(entryPointName, entryPoint);
@@ -181,7 +181,7 @@ export class EntryPointGrouper implements Processor {
     // only deprecated doc, the last deprecated doc is used. We don't want to always
     // skip deprecated docs as they could be still needed for documentation of a
     // deprecated entry-point.
-    for (let doc of docs) {
+    for (const doc of docs) {
       if (!isDeprecatedDoc(doc)) {
         return doc;
       }
@@ -209,7 +209,7 @@ export class EntryPointGrouper implements Processor {
   /** Finds the matching entry-point of the given file path. */
   private _findMatchingEntryPoint(basePath: string): NgEntrypoint | null {
     let foundEntryPoint: NgEntrypoint | null = null;
-    for (let entryPoint of this.entryPoints) {
+    for (const entryPoint of this.entryPoints) {
       if (entryPoint.basePath !== basePath) {
         continue;
       }

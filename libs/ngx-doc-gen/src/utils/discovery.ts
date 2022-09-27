@@ -1,12 +1,12 @@
 import { statSync } from 'fs-extra';
+import * as path from 'canonical-path';
+import * as FastGlob from 'fast-glob';
+
 import { NgEntrypoint } from '../interfaces/ng-entrypoint';
 import { NgPackageJson } from '../interfaces/ng-package-json';
 import { PackageJson } from '../interfaces/package-json';
 import { parseJson } from './json-utils';
-import * as FastGlob from 'fast-glob';
 import { NgPackage } from '../interfaces/ng-package';
-
-var path = require('canonical-path');
 
 export const discoverNgPackage = async (workingDirectory: string, basePath: string): Promise<NgPackage> => {
   let projectPath = path.join(workingDirectory, basePath);

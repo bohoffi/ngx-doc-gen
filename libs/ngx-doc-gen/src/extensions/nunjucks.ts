@@ -1,5 +1,4 @@
-// These type lacks type definitions.
-const highlightJs = require('highlight.js');
+import HighlightJS from 'highlight.js';
 
 /**
  * Nunjucks extension that supports rendering highlighted content. Content that is placed in
@@ -43,7 +42,7 @@ export class HighlightNunjucksExtension {
  */
 export function highlightCodeBlock(code: string, language: string) {
   if (language) {
-    return highlightJs.highlight(code, {
+    return HighlightJS.highlight(code, {
       language: language.toLowerCase() === 'ts' ? 'typescript' : language
     }).value;
   }
