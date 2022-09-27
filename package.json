@@ -5,6 +5,7 @@
     "postinstall": "node ./decorate-angular-cli.js && ngcc --properties es2015 browser module main",
     "build": "nx run ngx-doc-gen:build",
     "lint": "nx run ngx-doc-gen:lint",
+    "test": "nx run ngx-doc-gen:test",
     "test:doc-gen:single-entrypoint": "nx run single-entrypoint:doc-gen",
     "test:doc-gen:multi-entrypoint": "nx run multi-entrypoint:doc-gen"
   },

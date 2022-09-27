@@ -11,7 +11,8 @@
     ]
   },
   "exclude": [
-    "**/*.spec.ts"
+    "**/*.spec.ts",
+    "**/__mocks__/*"
   ],
   "include": [
     "**/*.ts"
