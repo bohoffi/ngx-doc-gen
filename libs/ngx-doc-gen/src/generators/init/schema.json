@@ -1,0 +1,8 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "cli": "nx",
+  "$id": "Init",
+  "title": "InitGeneratorOptions",
+  "description": "Installs 'ngx-doc-gen' as a dev dependency in your workspace.",
+  "type": "object"
+}
