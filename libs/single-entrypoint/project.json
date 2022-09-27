@@ -40,6 +40,9 @@
           "libs/single-entrypoint/src/**/*.html"
         ]
       }
+    },
+    "doc-gen": {
+      "executor": "./dist/libs/ngx-doc-gen:generate"
     }
   },
   "tags": []
