@@ -49,6 +49,26 @@
           }
         ]
       }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": [
+        "{options.outputFile}"
+      ],
+      "options": {
+        "lintFilePatterns": [
+          "libs/ngx-doc-gen/**/*.ts"
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": [
+        "coverage/libs/ngx-doc-gen"
+      ],
+      "options": {
+        "jestConfig": "libs/ngx-doc-gen/jest.config.js"
+      }
     }
   },
   "tags": []

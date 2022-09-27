@@ -4,7 +4,15 @@ import { MemberDoc } from 'dgeni-packages/typescript/api-doc-types/MemberDoc';
 import ts from 'typescript';
 import { getInheritedDocsOfClass } from '../common/class-inheritance';
 import { isMethod, isProperty, decorateDeprecatedDoc, isDirective, getDirectiveSelectors, isService, isNgModule } from '../common/decorators';
-import { CategorizedClassLikeDoc, CategorizedMethodMemberDoc, CategorizedPropertyMemberDoc, CategorizedClassDoc, CategorizedFunctionExportDoc, CategorizedConstExportDoc, CategorizedTypeAliasExportDoc } from '../common/dgeni-definitions';
+import {
+  CategorizedClassLikeDoc,
+  CategorizedMethodMemberDoc,
+  CategorizedPropertyMemberDoc,
+  CategorizedClassDoc,
+  CategorizedFunctionExportDoc,
+  CategorizedConstExportDoc,
+  CategorizedTypeAliasExportDoc
+} from '../common/dgeni-definitions';
 import { getDirectiveMetadata } from '../common/directive-metadata';
 import { normalizeFunctionParameters } from '../common/normalize-function-parameters';
 import { isPublicDoc } from '../common/private-docs';
@@ -93,7 +101,7 @@ export class Categorizer implements Processor {
     // Classes can only extend a single class. This means that there can't be multiple extend
     // clauses for the Dgeni document. To make the template syntax simpler and more readable,
     // store the extended class in a variable.
-    classDoc.extendedDoc = classDoc.extendsClauses[0] ? classDoc.extendsClauses[0].doc! : undefined;
+    classDoc.extendedDoc = classDoc.extendsClauses[0] ? classDoc.extendsClauses[0].doc : undefined;
     classDoc.directiveMetadata = getDirectiveMetadata(classDoc);
     classDoc.inheritedDocs = getInheritedDocsOfClass(classDoc, this._exportSymbolsToDocsMap);
 

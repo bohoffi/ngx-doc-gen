@@ -1,9 +1,9 @@
 import { Package } from 'dgeni';
+import * as jsdocPackage from 'dgeni-packages/jsdoc';
+import * as nunjucksPackage from 'dgeni-packages/nunjucks';
+import * as typescriptPackage from 'dgeni-packages/typescript';
 import { NgEntrypoint } from '../interfaces/ng-entrypoint';
 import { NgPackage } from '../interfaces/ng-package';
-const jsdocPackage = require('dgeni-packages/jsdoc');
-const nunjucksPackage = require('dgeni-packages/nunjucks');
-const typescriptPackage = require('dgeni-packages/typescript');
 
 export const createDgeniPackage = (packageName: string): Package => {
   return new Package(packageName, [
