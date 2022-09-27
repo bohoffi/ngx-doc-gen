@@ -1,9 +1,9 @@
 {
   "$schema": "http://json-schema.org/schema",
   "generators": {
-    "install": {
-      "factory": "./src/generators/install/generator",
-      "schema": "./src/generators/install/schema.json",
+    "configure": {
+      "factory": "./src/generators/configure/generator",
+      "schema": "./src/generators/configure/schema.json",
       "description": "Configures libraries for documentation generation.",
       "aliases": [
         "ng-add"
@@ -12,11 +12,11 @@
   },
   "schematics": {
     "ng-add": {
-      "factory": "./src/generators/install/compat",
-      "schema": "./src/generators/install/schema.json",
+      "factory": "./src/generators/configure/compat",
+      "schema": "./src/generators/configure/schema.json",
       "description": "Configures libraries for documentation generation.",
       "aliases": [
-        "install"
+        "configure"
       ]
     }
   }
