@@ -31,7 +31,7 @@ export default async function generateDoc(
 
   try {
     const generate = await engine.generate(options, workspaceRoot, projectRoot);
-    logger.info(`✔️ Successfully generated documentation for ${generate}`);
+    logger.info(`✅ Successfully generated documentation for ${generate}`);
 
     return {
       success: true
