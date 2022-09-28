@@ -38,7 +38,8 @@
     "fast-glob": "^3.2.11",
     "fs-extra": "^10.1.0",
     "highlight.js": "^11.5.1",
-    "jsonc-parser": "^3.0.0"
+    "jsonc-parser": "^3.0.0",
+    "ng-packagr": ">= 13.0.0"
   },
   "ng-add": {
     "save": "devDependencies"
