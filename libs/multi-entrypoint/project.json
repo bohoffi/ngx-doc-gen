@@ -37,7 +37,13 @@
       "options": {
         "lintFilePatterns": [
           "libs/multi-entrypoint/src/**/*.ts",
-          "libs/multi-entrypoint/src/**/*.html"
+          "libs/multi-entrypoint/src/**/*.html",
+          "libs/multi-entrypoint/one/**/*.ts",
+          "libs/multi-entrypoint/one/**/*.html",
+          "libs/multi-entrypoint/two/**/*.ts",
+          "libs/multi-entrypoint/two/**/*.html",
+          "libs/multi-entrypoint/three/**/*.ts",
+          "libs/multi-entrypoint/three/**/*.html"
         ]
       }
     },
