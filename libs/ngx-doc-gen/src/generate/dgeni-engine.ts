@@ -1,10 +1,10 @@
 import { Dgeni, Package } from 'dgeni';
 import { ReadTypeScriptModules } from 'dgeni-packages/typescript/processors/readTypeScriptModules';
 import { TsParser } from 'dgeni-packages/typescript/services/TsParser';
+import { discoverPackages } from 'ng-packagr/lib/ng-package/discover-packages';
 import * as path from 'canonical-path';
 
 import { HighlightNunjucksExtension } from '../extensions/nunjucks';
-import { NgPackage } from '../interfaces/ng-package';
 import { AsyncFunctionsProcessor } from '../processors/async-functions';
 import { categorizer } from '../processors/categorizer';
 import { DocsPrivateFilter } from '../processors/docs-private-filter';
@@ -15,18 +15,24 @@ import { MergeInheritedProperties, mergeInheritedProperties } from '../processor
 import { ResolveInheritedDocs, resolveInheritedDocs } from '../processors/resolve-inherited-docs';
 import { NgxDocGenOptions } from '../schema/ngx-doc-gen.options';
 import { LogLevel } from '../types/log-level';
-import { discoverNgPackage } from '../utils/discovery';
 import { collectEntrypoints, createDgeniPackage } from '../utils/package-utils';
 import { patchLogService } from '../utils/patch-log-service';
+import { NgPackage } from 'ng-packagr/lib/ng-package/package';
 
 export const generate = async (options: NgxDocGenOptions, workingDirectory: string, projectRoot: string): Promise<string> => {
-  const ngPackage = await discoverNgPackage(workingDirectory, projectRoot);
+  let projectPath = path.join(workingDirectory, projectRoot);
+  projectPath = path.isAbsolute(projectPath) ? projectPath : path.resolve(projectPath);
+
+  const ngPackage = await discoverPackages({
+    project: projectPath
+  });
+
   return await generateDocumentation(ngPackage, workingDirectory, options);
 };
 
 const generateDocumentation = async (ngPackge: NgPackage, workingDirectory: string, options: NgxDocGenOptions): Promise<string> => {
-  const outputDir = path.join(workingDirectory, options.outputPath);
-  const dgeniPackage = createDgeniPackage(ngPackge.packageName);
+  const outputDir = path.join(workingDirectory, options.outputPath)
+  const dgeniPackage = createDgeniPackage(ngPackge.primary.moduleId);
 
   setProcessors(dgeniPackage);
 
@@ -42,7 +48,7 @@ const generateDocumentation = async (ngPackge: NgPackage, workingDirectory: stri
 
   return await new Dgeni([dgeniPackage])
     .generate()
-    .then(() => ngPackge.packageName);
+    .then(() => ngPackge.primary.moduleId);
 };
 
 /**
@@ -194,7 +200,7 @@ const configureTypeScriptModule = (
     writeFilesProcessor: any,
     readFilesProcessor: any) {
 
-    const packagePath = ngPackage.basePath;
+    const packagePath = ngPackage.src;
     // Set the base path for the "readFilesProcessor" to the execroot. This is necessary because
     // otherwise the "writeFilesProcessor" is not able to write to the specified output path.
     readFilesProcessor.basePath = workingDirectory;
@@ -210,11 +216,10 @@ const configureTypeScriptModule = (
 
     const packageEntrypoints = collectEntrypoints(ngPackage);
     packageEntrypoints.forEach(ep => {
-      const entrypointIndexPath = `${ep.basePath}/${ep.ngPackageJson.lib?.entryFile}`;
+      const entrypointIndexPath = `${ep.entryFilePath}`;
 
       entryPointGrouper.entryPoints.push(ep);
-
-      tsParser.options.paths[`${ep.packageJson.name}`] = [entrypointIndexPath];
+      tsParser.options.paths[`${ep.moduleId}`] = [entrypointIndexPath];
       readTypeScriptModules.sourceFiles.push(entrypointIndexPath);
     });
 
