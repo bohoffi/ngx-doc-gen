@@ -12,11 +12,11 @@
 {%- endif -%}
 
 {%- if constant.description -%}
-  <p class="docs-api-constant-description">{$ constant.description | marked | safe $}</p>
+<div class="docs-api-constant-description">{$ constant.description | marked | safe $}</div>
 {%- endif -%}
 
 <div class="docs-markdown">
-<pre class="docs-markdown-pre">
+  <pre class="docs-markdown-pre">
 <code class="docs-markdown-code">
 {%- highlight "typescript" -%}
   const {$ constant.name | safe $}: {$ constant.type | safe $};

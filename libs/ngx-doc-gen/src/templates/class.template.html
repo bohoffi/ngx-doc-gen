@@ -14,14 +14,14 @@
 </h4>
 
 {%- if class.description -%}
-<p class="docs-api-class-description">{$ class.description | marked | safe $}</p>
+<div class="docs-api-class-description">{$ class.description | marked | safe $}</div>
 {%- endif -%}
 
 {%- if class.directiveSelectors -%}
 <p class="docs-api-directive-selectors">
   <span class="docs-api-class-selector-label">Selector:</span>
   {% for selector in class.directiveSelectors %}
-    <span class="docs-api-class-selector-name">{$ selector $}</span>
+  <span class="docs-api-class-selector-name">{$ selector $}</span>
   {% endfor %}
 </p>
 {%- endif -%}
