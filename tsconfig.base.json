@@ -21,6 +21,15 @@
       "@multi": [
         "libs/multi-entrypoint/src/index.ts"
       ],
+      "@multi/one": [
+        "libs/multi-entrypoint/one/src/index.ts"
+      ],
+      "@multi/three": [
+        "libs/multi-entrypoint/three/src/index.ts"
+      ],
+      "@multi/two": [
+        "libs/multi-entrypoint/two/src/index.ts"
+      ],
       "@single": [
         "libs/single-entrypoint/src/index.ts"
       ]
