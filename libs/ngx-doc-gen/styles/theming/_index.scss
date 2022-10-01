@@ -1,0 +1,7 @@
+@use './docs.theme.scss' as docs;
+@use './tables.theme.scss' as tables;
+
+@mixin docs-theme($theme) {
+  @include docs.theme($theme);
+  @include tables.theme($theme);
+}
