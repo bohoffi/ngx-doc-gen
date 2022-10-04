@@ -6,13 +6,15 @@
 
 # ngx-doc-gen 📚 [![npm version](https://img.shields.io/npm/v/ngx-doc-gen.svg)](https://www.npmjs.com/package/ngx-doc-gen)
 
-Automatically generate your library's API docs using Angular CLI or NX.
+> Automatically generate your library's API docs using Angular CLI or NX.
 
 ## Credits <a name="credits"></a>
 
 The initial spark was given by the folks from the Angular team ([angular/components](https://github.com/angular/components)) who are using a perfectly working base implementation on documentation generation utilizing [Dgeni](https://github.com/angular/dgeni).
 
 Props to those who deserve it 🍻
+
+Most of the code as well as the templates and styles originate from their repository.
 
 ## 📕 Installation / Configuration
 
@@ -62,7 +64,7 @@ After everything is done ngx-doc-gen will output an HTML file per entrypoint int
 
 If not provided or left empty - the default - `configure` (Generator) and `ng add` (Angular CLI) will scan your workspace for all __buildable__ library projects and condigures them for documentation generation.
 
-## Generation options
+## ⚙️ Generation options
 
 ### Per CLI
 
@@ -115,4 +117,28 @@ Every CLI parameter can also be bound to the `doc-gen` target in your workspace 
   }
 }
 ...
+```
+
+## 🎨 Styling
+
+As the generated docs are just plain HTML files you apply whatever styling you want. For convinience ngx-doc-gen comes with two SCSS mixins.
+
+### `core`
+
+Applies some general styles for font, spacing, borders, etc. Just include the mixing in your root stylesheet.
+
+```scss
+@use 'ngx-doc-gen/styles' as ngx-doc-gen;
+
+@include ngx-doc-gen.core();
+```
+
+### `docs-theme`
+
+Applies some Angular Material touch. Just pass your Angular Material theme into the mixin.
+
+```scss
+@use 'ngx-doc-gen/styles/theming' as ngx-doc-gen;
+
+@include ngx-doc-gen.docs-theme($theme);
 ```

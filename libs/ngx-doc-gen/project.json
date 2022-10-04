@@ -39,6 +39,11 @@
           },
           {
             "input": "./libs/ngx-doc-gen",
+            "glob": "**/*.scss",
+            "output": "."
+          },
+          {
+            "input": "./libs/ngx-doc-gen",
             "glob": "executors.json",
             "output": "."
           },
