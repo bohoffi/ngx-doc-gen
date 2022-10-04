@@ -1,1 +1,7 @@
-@use './docs.scss';
+@use './docs.scss' as docs;
+@use './tables.scss' as tables;
+
+@mixin core() {
+  @include docs.core();
+  @include tables.core();
+}
