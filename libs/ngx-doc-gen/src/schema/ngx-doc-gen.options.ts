@@ -1,3 +1,4 @@
+import { TagDefinition } from '../common/tags';
 import { LogLevel } from '../types/log-level';
 
 export interface NgxDocGenOptions {
@@ -17,4 +18,8 @@ export interface NgxDocGenOptions {
      * Run through and reports activity without writing out results.
      */
   dryRun?: boolean;
+  /**
+   * Configures tag definition for the Dgeni JSDoc processor not supported by JSDoc.
+   */
+  customTags?: TagDefinition[]
 }

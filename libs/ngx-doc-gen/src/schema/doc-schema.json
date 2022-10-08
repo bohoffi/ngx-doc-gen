@@ -44,6 +44,37 @@
         "d"
       ],
       "description": "Run through and reports activity without writing out results."
+    },
+    "customTags": {
+      "description": "Configures tag definition for the Dgeni JSDoc processor not supported by JSDoc.",
+      "aliases": [
+        "c"
+      ],
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "Name of the tag (excluding the `@`).",
+            "type": "string"
+          },
+          "docProperty": {
+            "description": "Property where the tag information should be attached to.",
+            "type": "string"
+          },
+          "multi": {
+            "description": "Whether multiple instances of the tag can be used in the same comment.",
+            "type": "boolean"
+          },
+          "required": {
+            "description": "Whether this tag is required for all API documents.",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      }
     }
   }
 }

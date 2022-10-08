@@ -18,6 +18,7 @@ import { LogLevel } from '../types/log-level';
 import { collectEntrypoints, createDgeniPackage } from '../utils/package-utils';
 import { patchLogService } from '../utils/patch-log-service';
 import { NgPackage } from 'ng-packagr/lib/ng-package/package';
+import { TagDefinition } from '../common/tags';
 
 export const generate = async (options: NgxDocGenOptions, workingDirectory: string, projectRoot: string): Promise<string> => {
   let projectPath = path.join(workingDirectory, projectRoot);
@@ -41,7 +42,7 @@ const generateDocumentation = async (ngPackge: NgPackage, workingDirectory: stri
   configureLogging(dgeniPackage, options.logLevel);
   disbableNativeReadFilesProcessor(dgeniPackage);
   configureComputPathsProcessor(dgeniPackage);
-  configureCostumJsDocTags(dgeniPackage);
+  configureCostumJsDocTags(dgeniPackage, options.customTags);
   configureIgnoreDefaultExports(dgeniPackage);
   configureTemplateEngine(dgeniPackage);
   configureTypeScriptModule(dgeniPackage, ngPackge, outputDir, workingDirectory);
@@ -121,28 +122,9 @@ const configureComputPathsProcessor = (dgeniPackage: Package): void => {
   });
 };
 
-const configureCostumJsDocTags = (dgeniPackage: Package): void => {
+const configureCostumJsDocTags = (dgeniPackage: Package, tagDefinitions: TagDefinition[] = []): void => {
   dgeniPackage.config(function (parseTagsProcessor: any) {
-    parseTagsProcessor.tagDefinitions = parseTagsProcessor.tagDefinitions.concat([
-      { name: 'docs-private' },
-      { name: 'docs-public' },
-      { name: 'docs-primary-export' },
-      { name: 'breaking-change' },
-      // Adds support for the `tsdoc` `@template` annotation/tag.
-      // https://www.typescriptlang.org/docs/handbook/jsdoc-supported-types.html#template.
-      { name: 'template', multi: true },
-      //  JSDoc annotations/tags which are not supported by default.
-      { name: 'throws', multi: true },
-
-      // Annotations/tags from external API docs (i.e. from the node modules). These tags are
-      // added so that no errors are reported.
-      // TODO(devversion): remove this once the fix in dgeni-package is available.
-      //   https://github.com/angular/dgeni-packages/commit/19e629c0d156572cbea149af9e0cc7ec02db7cb6.
-      { name: 'usageNotes' },
-      { name: 'publicApi' },
-      { name: 'ngModule', multi: true },
-      { name: 'nodoc' },
-    ]);
+    parseTagsProcessor.tagDefinitions = parseTagsProcessor.tagDefinitions.concat(tagDefinitions);
   });
 };
 

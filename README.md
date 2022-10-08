@@ -97,7 +97,22 @@ If not provided or left empty - the default - `configure` (Generator) and `ng ad
 
 ### Per workspace config (`angular.json` / `workspace.json` / `project.json`)
 
-Every CLI parameter can also be bound to the `doc-gen` target in your workspace configuration so you don't have to pass them on every CLI call.
+Every CLI parameter can also be bound to the `doc-gen` target in your workspace configuration so you don't have to pass them on every CLI call - see example below.
+
+Some parameters can be passed by configuration only.
+
+#### `customTags`
+
+* Type: `TagDefinition[]`
+* Configures tag definition for the Dgeni JSDoc processor not supported by JSDoc.
+* Default: `[]`
+
+| Property          | Type         | Description  |
+|---------------|-----------|-------------|
+| name               | `string`     | Name of the tag (excluding the `@`)              |
+| docProperty?  | `string`    | Property where the tag information should be attached to.         |
+| multi?              | `boolean` | Whether multiple instances of the tag can be used in the same comment. |
+| required?        | `boolean` | Whether this tag is required for all API documents.                                    |
 
 ```json
 // Example given for a project.json
@@ -111,6 +126,11 @@ Every CLI parameter can also be bound to the `doc-gen` target in your workspace 
         "outputPath": "./docs/libs/<project>",
         "excludeBase": [
           "Observable"
+        ],
+        "customTags": [
+          {
+            "name": "example"
+          }
         ]
       }
     }
