@@ -75,6 +75,16 @@
           "name"
         ]
       }
+    },
+    "docsPublic": {
+      "description": "Tag to enforce documentation of usually private symbols. Only applies to symbols at least exported. Defaults to `docs-public`.",
+      "type": "string",
+      "default": "docs-public"
+    },
+    "docsPrivate": {
+      "description": "Tag to explicitly hide symbols from documentation. Defaults to `docs-private`.",
+      "type": "string",
+      "default": "docs-private"
     }
   }
 }

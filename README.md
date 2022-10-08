@@ -95,6 +95,18 @@ If not provided or left empty - the default - `configure` (Generator) and `ng ad
 *  Would let the entrypoint scanning run without generating any documentation
 * Default: `false`
 
+#### `--docs-public`
+
+* Type: `string`
+* Tag to enforce documentation of usually private symbols. Only applies to symbols at least exported.
+* Default: `docs-public`
+
+#### `--docs-private`
+
+* Type: `string`,
+* Tag to explicitly hide symbols from documentation.
+* Default: `docs-private`
+
 ### Per workspace config (`angular.json` / `workspace.json` / `project.json`)
 
 Every CLI parameter can also be bound to the `doc-gen` target in your workspace configuration so you don't have to pass them on every CLI call - see example below.

@@ -18,7 +18,6 @@ import { LogLevel } from '../types/log-level';
 import { collectEntrypoints, createDgeniPackage } from '../utils/package-utils';
 import { patchLogService } from '../utils/patch-log-service';
 import { NgPackage } from 'ng-packagr/lib/ng-package/package';
-import { TagDefinition } from '../common/tags';
 
 export const generate = async (options: NgxDocGenOptions, workingDirectory: string, projectRoot: string): Promise<string> => {
   let projectPath = path.join(workingDirectory, projectRoot);
@@ -42,7 +41,7 @@ const generateDocumentation = async (ngPackge: NgPackage, workingDirectory: stri
   configureLogging(dgeniPackage, options.logLevel);
   disbableNativeReadFilesProcessor(dgeniPackage);
   configureComputPathsProcessor(dgeniPackage);
-  configureCostumJsDocTags(dgeniPackage, options.customTags);
+  configureCostumJsDocTags(dgeniPackage, options);
   configureIgnoreDefaultExports(dgeniPackage);
   configureTemplateEngine(dgeniPackage);
   configureTypeScriptModule(dgeniPackage, ngPackge, outputDir, workingDirectory);
@@ -122,9 +121,13 @@ const configureComputPathsProcessor = (dgeniPackage: Package): void => {
   });
 };
 
-const configureCostumJsDocTags = (dgeniPackage: Package, tagDefinitions: TagDefinition[] = []): void => {
+const configureCostumJsDocTags = (dgeniPackage: Package, options: NgxDocGenOptions): void => {
   dgeniPackage.config(function (parseTagsProcessor: any) {
-    parseTagsProcessor.tagDefinitions = parseTagsProcessor.tagDefinitions.concat(tagDefinitions);
+    parseTagsProcessor.tagDefinitions = parseTagsProcessor.tagDefinitions.concat([
+      options.docsPublic,
+      options.docsPrivate,
+      ...options.customTags
+    ]);
   });
 };
 

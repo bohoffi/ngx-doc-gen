@@ -21,5 +21,13 @@ export interface NgxDocGenOptions {
   /**
    * Configures tag definition for the Dgeni JSDoc processor not supported by JSDoc.
    */
-  customTags?: TagDefinition[]
+  customTags?: TagDefinition[],
+  /**
+   * Tag to enforce documentation of usually private symbols. Only applies to symbols at least exported. Defaults to `docs-public`.
+   */
+  docsPublic?: string;
+  /**
+   * Tag to explicitly hide symbols from documentation. Defaults to `docs-private`.
+   */
+  docsPrivate?: string;
 }
