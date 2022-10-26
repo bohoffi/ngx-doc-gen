@@ -160,7 +160,20 @@ export class EntryPointGrouper implements Processor {
       }
     });
 
-    return Array.from(entryPointsDocs.values());
+    return Array.from(entryPointsDocs.values()).filter(entrypoint => this.hasExports(entrypoint));
+  }
+
+  private hasExports(entrypoint: EntryPointDoc): boolean {
+    return !!entrypoint.aliases.length
+      || !!entrypoint.classes.length
+      || !!entrypoint.constants.length
+      || !!entrypoint.directives.length
+      || !!entrypoint.exportedNgModules.length
+      || !!entrypoint.functions.length
+      || !!entrypoint.interfaces.length
+      || !!entrypoint.services.length
+      || !!entrypoint.testHarnesses.length
+      || !!entrypoint.typeAliases.length;
   }
 
   /**
