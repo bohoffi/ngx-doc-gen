@@ -85,6 +85,11 @@
       "description": "Tag to explicitly hide symbols from documentation. Defaults to `docs-private`.",
       "type": "string",
       "default": "docs-private"
+    },
+    "breakingChange": {
+      "description": "Tag indicating the version with which a deprecated symbol will get removed. Defaults to `breaking-change`.",
+      "type": "string",
+      "default": "breaking-change"
     }
   }
 }

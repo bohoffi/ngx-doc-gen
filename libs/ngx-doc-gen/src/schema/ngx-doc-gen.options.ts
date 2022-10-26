@@ -30,4 +30,8 @@ export interface NgxDocGenOptions {
    * Tag to explicitly hide symbols from documentation. Defaults to `docs-private`.
    */
   docsPrivate?: string;
+  /**
+   * Tag indicating the version with which a deprecated symbol will get removed. Defaults to `breaking-change`.
+   */
+  breakingChange?: string;
 }

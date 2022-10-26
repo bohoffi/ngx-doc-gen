@@ -107,6 +107,12 @@ If not provided or left empty - the default - `configure` (Generator) and `ng ad
 * Tag to explicitly hide symbols from documentation.
 * Default: `docs-private`
 
+#### `--breaking-change`
+
+* Type: `string`,
+* Tag indicating the version with which a deprecated symbol will get removed.
+* Default: `breaking-change`
+
 ### Per workspace config (`angular.json` / `workspace.json` / `project.json`)
 
 Every CLI parameter can also be bound to the `doc-gen` target in your workspace configuration so you don't have to pass them on every CLI call - see example below.

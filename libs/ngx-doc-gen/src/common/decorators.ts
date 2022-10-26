@@ -81,8 +81,8 @@ export function hasDecorator(doc: HasDecoratorsDoc, decoratorName: string): bool
   );
 }
 
-export function getBreakingChange(doc: ApiDoc): string | null {
-  const breakingChange = findJsDocTag(doc, 'breaking-change');
+export function getBreakingChange(doc: ApiDoc, breakingChangeTag: string): string | null {
+  const breakingChange = findJsDocTag(doc, breakingChangeTag);
   return breakingChange ? breakingChange.description : null;
 }
 
@@ -90,11 +90,11 @@ export function getBreakingChange(doc: ApiDoc): string | null {
  * Decorates public exposed docs. Creates a property on the doc that indicates whether
  * the item is deprecated or not.
  */
-export function decorateDeprecatedDoc(doc: ApiDoc & DeprecationInfo) {
+export function decorateDeprecatedDoc(doc: ApiDoc & DeprecationInfo, breakingChangeTag: string) {
   doc.isDeprecated = isDeprecatedDoc(doc);
-  doc.breakingChange = getBreakingChange(doc);
+  doc.breakingChange = getBreakingChange(doc, breakingChangeTag);
 
   if (doc.isDeprecated && !doc.breakingChange) {
-    console.warn('Warning: There is a deprecated item without a @breaking-change tag.', doc.id);
+    console.warn(`Warning: There is a deprecated item without a @${breakingChangeTag} tag.`, doc.id);
   }
 }

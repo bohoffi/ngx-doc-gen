@@ -12,8 +12,10 @@ export class DocsPrivateFilter implements Processor {
   $runBefore = ['categorizer'];
   $runAfter = ['mergeInheritedProperties'];
 
-  public docsPublic = 'docs-public';
-  public docsPrivate = 'docs-private';
+  constructor(
+    public readonly docsPublic = 'docs-public',
+    public readonly docsPrivate = 'docs-private'
+  ) { }
 
   $process(docs: DocCollection) {
     const publicDocs = docs.filter(doc => isPublicDoc(doc, this.docsPublic, this.docsPrivate));

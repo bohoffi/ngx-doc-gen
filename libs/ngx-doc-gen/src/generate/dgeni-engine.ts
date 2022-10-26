@@ -6,7 +6,7 @@ import * as path from 'canonical-path';
 
 import { HighlightNunjucksExtension } from '../extensions/nunjucks';
 import { AsyncFunctionsProcessor } from '../processors/async-functions';
-import { categorizer } from '../processors/categorizer';
+import { Categorizer, categorizer } from '../processors/categorizer';
 import { DocsPrivateFilter } from '../processors/docs-private-filter';
 import { EntryPointGrouper } from '../processors/entry-point-grouper';
 import { ErrorUnknownJsdocTagsProcessor } from '../processors/error-unknown-jsdoc-tags';
@@ -34,8 +34,9 @@ const generateDocumentation = async (ngPackge: NgPackage, workingDirectory: stri
   const outputDir = path.join(workingDirectory, options.outputPath)
   const dgeniPackage = createDgeniPackage(ngPackge.primary.moduleId);
 
-  setProcessors(dgeniPackage);
+  setProcessors(dgeniPackage, options);
 
+  configureCategorizer(dgeniPackage, options);
   configureExcludeBase(dgeniPackage, options.excludeBase);
 
   configureLogging(dgeniPackage, options.logLevel);
@@ -54,7 +55,7 @@ const generateDocumentation = async (ngPackge: NgPackage, workingDirectory: stri
 /**
  * Sets the different processors used to transform to code.
  */
-const setProcessors = (dgeniPackage: Package): void => {
+const setProcessors = (dgeniPackage: Package, options: NgxDocGenOptions): void => {
   // Processor that resolves inherited docs of class docs. The resolved docs will
   // be added to the pipeline so that the JSDoc processors can capture these too.
   // Note: needs to use a factory function since the processor relies on DI.
@@ -70,7 +71,7 @@ const setProcessors = (dgeniPackage: Package): void => {
 
 
   // Processor that filters out symbols that should not be shown in the docs.
-  dgeniPackage.processor(new DocsPrivateFilter());
+  dgeniPackage.processor(new DocsPrivateFilter(options.docsPublic, options.docsPrivate));
 
   // Processor that throws an error if API docs with unknown JSDoc tags are discovered.
   dgeniPackage.processor(new ErrorUnknownJsdocTagsProcessor());
@@ -86,6 +87,20 @@ const setProcessors = (dgeniPackage: Package): void => {
   dgeniPackage.processor(new AsyncFunctionsProcessor());
 };
 
+/**
+ * Sets public, private and breakingChange tags at Categorizer.
+ */
+const configureCategorizer = (dgeniPackage: Package, options: NgxDocGenOptions): void => {
+  dgeniPackage.config(function (categorizer: Categorizer) {
+    categorizer.docsPublic = options.docsPublic;
+    categorizer.docsPrivate = options.docsPrivate;
+    categorizer.breakingChange = options.breakingChange;
+  });
+};
+
+/**
+ * Sets excluded bases at ResolveInheritedDocs.
+ */
 const configureExcludeBase = (dgeniPackage: Package, excludeBase?: string[]): void => {
   dgeniPackage.config(function (resolveInheritedDocs: ResolveInheritedDocs, mergeInheritedProperties: MergeInheritedProperties) {
     resolveInheritedDocs.excludeBase = excludeBase || [];
