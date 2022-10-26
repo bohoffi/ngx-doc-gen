@@ -42,7 +42,14 @@
       }
     },
     "doc-gen": {
-      "executor": "./dist/libs/ngx-doc-gen:generate"
+      "executor": "./dist/libs/ngx-doc-gen:generate",
+      "options": {
+        "customTags": [
+          {
+            "name": "example"
+          }
+        ]
+      }
     }
   },
   "tags": []
