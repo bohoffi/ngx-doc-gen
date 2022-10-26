@@ -37,14 +37,6 @@
         "e"
       ]
     },
-    "dryRun": {
-      "type": "boolean",
-      "default": false,
-      "aliases": [
-        "d"
-      ],
-      "description": "Run through and reports activity without writing out results."
-    },
     "customTags": {
       "description": "Configures tag definition for the Dgeni JSDoc processor not supported by JSDoc.",
       "aliases": [

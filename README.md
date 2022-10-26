@@ -89,12 +89,6 @@ If not provided or left empty - the default - `configure` (Generator) and `ng ad
   * Your API contains a service extending `Observable` which would include members like `subscribe()` in your documentation. This could be prevented as follows:
   * `--exclude-base Observable`
 
-#### `--dry-run`
-
-* Type: `boolean`
-*  Would let the entrypoint scanning run without generating any documentation
-* Default: `false`
-
 #### `--docs-public`
 
 * Type: `string`
