@@ -6,7 +6,7 @@ import * as path from 'canonical-path';
 
 import { HighlightNunjucksExtension } from '../extensions/nunjucks';
 import { AsyncFunctionsProcessor } from '../processors/async-functions';
-import { categorizer } from '../processors/categorizer';
+import { Categorizer, categorizer } from '../processors/categorizer';
 import { DocsPrivateFilter } from '../processors/docs-private-filter';
 import { EntryPointGrouper } from '../processors/entry-point-grouper';
 import { ErrorUnknownJsdocTagsProcessor } from '../processors/error-unknown-jsdoc-tags';
@@ -34,14 +34,15 @@ const generateDocumentation = async (ngPackge: NgPackage, workingDirectory: stri
   const outputDir = path.join(workingDirectory, options.outputPath)
   const dgeniPackage = createDgeniPackage(ngPackge.primary.moduleId);
 
-  setProcessors(dgeniPackage);
+  setProcessors(dgeniPackage, options);
 
+  configureCategorizer(dgeniPackage, options);
   configureExcludeBase(dgeniPackage, options.excludeBase);
 
   configureLogging(dgeniPackage, options.logLevel);
   disbableNativeReadFilesProcessor(dgeniPackage);
   configureComputPathsProcessor(dgeniPackage);
-  configureCostumJsDocTags(dgeniPackage);
+  configureCostumJsDocTags(dgeniPackage, options);
   configureIgnoreDefaultExports(dgeniPackage);
   configureTemplateEngine(dgeniPackage);
   configureTypeScriptModule(dgeniPackage, ngPackge, outputDir, workingDirectory);
@@ -54,7 +55,7 @@ const generateDocumentation = async (ngPackge: NgPackage, workingDirectory: stri
 /**
  * Sets the different processors used to transform to code.
  */
-const setProcessors = (dgeniPackage: Package): void => {
+const setProcessors = (dgeniPackage: Package, options: NgxDocGenOptions): void => {
   // Processor that resolves inherited docs of class docs. The resolved docs will
   // be added to the pipeline so that the JSDoc processors can capture these too.
   // Note: needs to use a factory function since the processor relies on DI.
@@ -70,7 +71,7 @@ const setProcessors = (dgeniPackage: Package): void => {
 
 
   // Processor that filters out symbols that should not be shown in the docs.
-  dgeniPackage.processor(new DocsPrivateFilter());
+  dgeniPackage.processor(new DocsPrivateFilter(options.docsPublic, options.docsPrivate));
 
   // Processor that throws an error if API docs with unknown JSDoc tags are discovered.
   dgeniPackage.processor(new ErrorUnknownJsdocTagsProcessor());
@@ -86,6 +87,20 @@ const setProcessors = (dgeniPackage: Package): void => {
   dgeniPackage.processor(new AsyncFunctionsProcessor());
 };
 
+/**
+ * Sets public, private and breakingChange tags at Categorizer.
+ */
+const configureCategorizer = (dgeniPackage: Package, options: NgxDocGenOptions): void => {
+  dgeniPackage.config(function (categorizer: Categorizer) {
+    categorizer.docsPublic = options.docsPublic;
+    categorizer.docsPrivate = options.docsPrivate;
+    categorizer.breakingChange = options.breakingChange;
+  });
+};
+
+/**
+ * Sets excluded bases at ResolveInheritedDocs.
+ */
 const configureExcludeBase = (dgeniPackage: Package, excludeBase?: string[]): void => {
   dgeniPackage.config(function (resolveInheritedDocs: ResolveInheritedDocs, mergeInheritedProperties: MergeInheritedProperties) {
     resolveInheritedDocs.excludeBase = excludeBase || [];
@@ -121,27 +136,12 @@ const configureComputPathsProcessor = (dgeniPackage: Package): void => {
   });
 };
 
-const configureCostumJsDocTags = (dgeniPackage: Package): void => {
+const configureCostumJsDocTags = (dgeniPackage: Package, options: NgxDocGenOptions): void => {
   dgeniPackage.config(function (parseTagsProcessor: any) {
     parseTagsProcessor.tagDefinitions = parseTagsProcessor.tagDefinitions.concat([
-      { name: 'docs-private' },
-      { name: 'docs-public' },
-      { name: 'docs-primary-export' },
-      { name: 'breaking-change' },
-      // Adds support for the `tsdoc` `@template` annotation/tag.
-      // https://www.typescriptlang.org/docs/handbook/jsdoc-supported-types.html#template.
-      { name: 'template', multi: true },
-      //  JSDoc annotations/tags which are not supported by default.
-      { name: 'throws', multi: true },
-
-      // Annotations/tags from external API docs (i.e. from the node modules). These tags are
-      // added so that no errors are reported.
-      // TODO(devversion): remove this once the fix in dgeni-package is available.
-      //   https://github.com/angular/dgeni-packages/commit/19e629c0d156572cbea149af9e0cc7ec02db7cb6.
-      { name: 'usageNotes' },
-      { name: 'publicApi' },
-      { name: 'ngModule', multi: true },
-      { name: 'nodoc' },
+      options.docsPublic,
+      options.docsPrivate,
+      ...options.customTags
     ]);
   });
 };

@@ -102,11 +102,6 @@ export class EntryPointGrouper implements Processor {
 
       const entryPointName = docEntryPoint.flatModuleFile;
 
-      // Compute a public URL that refers to the document. This is helpful if we want to
-      // make references to other API documents. e.g. showing the extended class.
-      // TODO
-      // doc.publicUrl = computeApiDocumentUrl(doc, docEntryPoint);
-
       // Get the entry-point for this doc, or, if one does not exist, create it.
       let entryPointDoc: EntryPointDoc;
       if (entryPointsDocs.has(entryPointName)) {

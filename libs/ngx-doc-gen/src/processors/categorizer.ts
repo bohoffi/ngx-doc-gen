@@ -39,6 +39,10 @@ export function categorizer(exportSymbolsToDocsMap: Map<ts.Symbol, ClassLikeExpo
 export class Categorizer implements Processor {
   $runBefore = ['docs-processed', 'entryPointGrouper'];
 
+  public docsPublic = 'docs-public';
+  public docsPrivate = 'docs-private';
+  public breakingChange = 'breaking-change';
+
   constructor(
     /** Shared map that can be used to resolve docs through symbols. */
     private _exportSymbolsToDocsMap: Map<ts.Symbol, ClassLikeExportDoc>,
@@ -84,7 +88,7 @@ export class Categorizer implements Processor {
     classLikeDoc.methods.forEach(doc => this._decorateMethodDoc(doc));
     classLikeDoc.properties.forEach(doc => this._decoratePropertyDoc(doc));
 
-    decorateDeprecatedDoc(classLikeDoc);
+    decorateDeprecatedDoc(classLikeDoc, this.breakingChange);
 
     // Sort members
     classLikeDoc.methods.sort(sortCategorizedMethodMembers);
@@ -120,7 +124,7 @@ export class Categorizer implements Processor {
     // In case the extended document is not public, we don't want to print it in the
     // rendered class API doc. This causes confusion and also is not helpful as the
     // extended document is not part of the docs and cannot be viewed.
-    if (classDoc.extendedDoc !== undefined && !isPublicDoc(classDoc.extendedDoc)) {
+    if (classDoc.extendedDoc !== undefined && !isPublicDoc(classDoc.extendedDoc, this.docsPublic, this.docsPrivate)) {
       classDoc.extendedDoc = undefined;
     }
 
@@ -144,7 +148,7 @@ export class Categorizer implements Processor {
    */
   private _decorateMethodDoc(methodDoc: CategorizedMethodMemberDoc) {
     normalizeFunctionParameters(methodDoc);
-    decorateDeprecatedDoc(methodDoc);
+    decorateDeprecatedDoc(methodDoc, this.breakingChange);
   }
 
   /**
@@ -153,7 +157,7 @@ export class Categorizer implements Processor {
    */
   private _decorateFunctionExportDoc(functionDoc: CategorizedFunctionExportDoc) {
     normalizeFunctionParameters(functionDoc);
-    decorateDeprecatedDoc(functionDoc);
+    decorateDeprecatedDoc(functionDoc, this.breakingChange);
   }
 
   /**
@@ -161,7 +165,7 @@ export class Categorizer implements Processor {
    * documents with a property that states whether the constant is deprecated or not.
    */
   private _decorateConstExportDoc(doc: CategorizedConstExportDoc) {
-    decorateDeprecatedDoc(doc);
+    decorateDeprecatedDoc(doc, this.breakingChange);
   }
 
   /**
@@ -169,7 +173,7 @@ export class Categorizer implements Processor {
    * documents with a property that states whether the type-alias is deprecated or not.
    */
   private _decorateTypeAliasExportDoc(doc: CategorizedTypeAliasExportDoc) {
-    decorateDeprecatedDoc(doc);
+    decorateDeprecatedDoc(doc, this.breakingChange);
   }
 
   /**
@@ -177,7 +181,7 @@ export class Categorizer implements Processor {
    * outputs will be marked. Aliases for the inputs or outputs will be stored as well.
    */
   private _decoratePropertyDoc(propertyDoc: CategorizedPropertyMemberDoc) {
-    decorateDeprecatedDoc(propertyDoc);
+    decorateDeprecatedDoc(propertyDoc, this.breakingChange);
 
     const metadata =
       propertyDoc.containerDoc.docType === 'class'

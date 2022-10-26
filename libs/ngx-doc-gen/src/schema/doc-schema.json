@@ -44,6 +44,52 @@
         "d"
       ],
       "description": "Run through and reports activity without writing out results."
+    },
+    "customTags": {
+      "description": "Configures tag definition for the Dgeni JSDoc processor not supported by JSDoc.",
+      "aliases": [
+        "c"
+      ],
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "Name of the tag (excluding the `@`).",
+            "type": "string"
+          },
+          "docProperty": {
+            "description": "Property where the tag information should be attached to.",
+            "type": "string"
+          },
+          "multi": {
+            "description": "Whether multiple instances of the tag can be used in the same comment.",
+            "type": "boolean"
+          },
+          "required": {
+            "description": "Whether this tag is required for all API documents.",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      }
+    },
+    "docsPublic": {
+      "description": "Tag to enforce documentation of usually private symbols. Only applies to symbols at least exported. Defaults to `docs-public`.",
+      "type": "string",
+      "default": "docs-public"
+    },
+    "docsPrivate": {
+      "description": "Tag to explicitly hide symbols from documentation. Defaults to `docs-private`.",
+      "type": "string",
+      "default": "docs-private"
+    },
+    "breakingChange": {
+      "description": "Tag indicating the version with which a deprecated symbol will get removed. Defaults to `breaking-change`.",
+      "type": "string",
+      "default": "breaking-change"
     }
   }
 }

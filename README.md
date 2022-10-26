@@ -95,9 +95,42 @@ If not provided or left empty - the default - `configure` (Generator) and `ng ad
 *  Would let the entrypoint scanning run without generating any documentation
 * Default: `false`
 
+#### `--docs-public`
+
+* Type: `string`
+* Tag to enforce documentation of usually private symbols. Only applies to symbols at least exported.
+* Default: `docs-public`
+
+#### `--docs-private`
+
+* Type: `string`,
+* Tag to explicitly hide symbols from documentation.
+* Default: `docs-private`
+
+#### `--breaking-change`
+
+* Type: `string`,
+* Tag indicating the version with which a deprecated symbol will get removed.
+* Default: `breaking-change`
+
 ### Per workspace config (`angular.json` / `workspace.json` / `project.json`)
 
-Every CLI parameter can also be bound to the `doc-gen` target in your workspace configuration so you don't have to pass them on every CLI call.
+Every CLI parameter can also be bound to the `doc-gen` target in your workspace configuration so you don't have to pass them on every CLI call - see example below.
+
+Some parameters can be passed by configuration only.
+
+#### `customTags`
+
+* Type: `TagDefinition[]`
+* Configures tag definition for the Dgeni JSDoc processor not supported by JSDoc.
+* Default: `[]`
+
+| Property          | Type         | Description  |
+|---------------|-----------|-------------|
+| name               | `string`     | Name of the tag (excluding the `@`)              |
+| docProperty?  | `string`    | Property where the tag information should be attached to.         |
+| multi?              | `boolean` | Whether multiple instances of the tag can be used in the same comment. |
+| required?        | `boolean` | Whether this tag is required for all API documents.                                    |
 
 ```json
 // Example given for a project.json
@@ -111,6 +144,11 @@ Every CLI parameter can also be bound to the `doc-gen` target in your workspace 
         "outputPath": "./docs/libs/<project>",
         "excludeBase": [
           "Observable"
+        ],
+        "customTags": [
+          {
+            "name": "example"
+          }
         ]
       }
     }
