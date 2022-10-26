@@ -48,7 +48,8 @@
           {
             "name": "example"
           }
-        ]
+        ],
+        "outputPath": "./dist/docs"
       }
     }
   },

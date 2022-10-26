@@ -1,0 +1,48 @@
+<div class="mat-typography">
+
+  <h2>
+    Welcome to ngx-doc-gen
+  </h2>
+
+  <p>
+    This page is for showcasing the generated API docs for the example libraries contained in the repository.
+  </p>
+
+  <p>
+    Those libraries feature two possible aspects of common library layouts - single and multi entrypoint. All results
+    are used here as component templates.
+  </p>
+
+  <a [routerLink]="['single-entrypoint']" class="content-link">
+    <h3>
+      Single entrypoint
+      <mat-icon>
+        open_in_new
+      </mat-icon>
+    </h3>
+  </a>
+
+  <p>
+    Maybe the most common library layout out there - where there is one single entrypoint exporting your librarys API.
+  </p>
+
+  <a [routerLink]="['multi-entrypoint']" class="content-link">
+    <h3>
+      Multi entrypoint
+      <mat-icon>
+        open_in_new
+      </mat-icon>
+    </h3>
+  </a>
+
+  <p>
+    Known from popular libraries like Angular Material - your library contains multiple entrypoints focussed on specific
+    features.
+  </p>
+
+  <p>
+    Note: This showcase uses Angular Materials Expansion Panel to visually divide the entrypoints API docs - generation
+    outputs one HTML file per entrypoint.
+  </p>
+
+</div>
