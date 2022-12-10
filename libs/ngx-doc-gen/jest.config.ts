@@ -1,5 +1,5 @@
 /* eslint-disable */
-module.exports = {
+export default {
   displayName: 'ngx-doc-gen',
   preset: '../../jest.preset.js',
   globals: {
