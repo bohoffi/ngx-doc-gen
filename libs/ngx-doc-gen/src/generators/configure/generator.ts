@@ -43,4 +43,4 @@ export default async function configure(
     });
 
   await formatFiles(tree);
-};
+}
