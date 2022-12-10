@@ -1,5 +1,5 @@
 import { addProjectConfiguration, getProjects, ProjectConfiguration, ProjectType, Tree } from '@nrwl/devkit';
-import { createTreeWithEmptyWorkspace } from '@nrwl/devkit/testing';
+import { createTreeWithEmptyV1Workspace } from '@nrwl/devkit/testing';
 import { ConfigureGeneratorOptions } from './configure-generator.options';
 import configure from './generator';
 import { createNonExistingProjectsErrorMessage } from './utils';
@@ -65,7 +65,7 @@ describe('configure generator', () => {
     configureOptions = {};
     workspace = new Map();
     configuredWorkspace = new Map();
-    workspaceTree = createTreeWithEmptyWorkspace();
+    workspaceTree = createTreeWithEmptyV1Workspace();
   });
 
   describe('using default options (`{}`)', () => {

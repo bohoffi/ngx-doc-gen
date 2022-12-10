@@ -1,13 +1,14 @@
 {
+  "name": "single-entrypoint",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "library",
-  "root": "libs/single-entrypoint",
   "sourceRoot": "libs/single-entrypoint/src",
   "prefix": "ngx-doc-gen",
   "targets": {
     "build": {
       "executor": "@nrwl/angular:package",
       "outputs": [
-        "dist/libs/single-entrypoint"
+        "{workspaceRoot}/dist/libs/single-entrypoint"
       ],
       "options": {
         "project": "libs/single-entrypoint/ng-package.json"
@@ -25,10 +26,10 @@
     "test": {
       "executor": "@nrwl/jest:jest",
       "outputs": [
-        "coverage/libs/single-entrypoint"
+        "{workspaceRoot}/coverage/libs/single-entrypoint"
       ],
       "options": {
-        "jestConfig": "libs/single-entrypoint/jest.config.js",
+        "jestConfig": "libs/single-entrypoint/jest.config.ts",
         "passWithNoTests": true
       }
     },

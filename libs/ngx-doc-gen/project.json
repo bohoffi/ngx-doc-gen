@@ -1,5 +1,6 @@
 {
-  "root": "libs/ngx-doc-gen",
+  "name": "ngx-doc-gen",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/ngx-doc-gen/src",
   "projectType": "library",
   "targets": {
@@ -69,10 +70,10 @@
     "test": {
       "executor": "@nrwl/jest:jest",
       "outputs": [
-        "coverage/libs/ngx-doc-gen"
+        "{workspaceRoot}/coverage/libs/ngx-doc-gen"
       ],
       "options": {
-        "jestConfig": "libs/ngx-doc-gen/jest.config.js"
+        "jestConfig": "libs/ngx-doc-gen/jest.config.ts"
       }
     }
   },

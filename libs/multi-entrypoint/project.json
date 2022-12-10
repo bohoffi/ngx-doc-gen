@@ -1,13 +1,14 @@
 {
+  "name": "multi-entrypoint",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "library",
-  "root": "libs/multi-entrypoint",
   "sourceRoot": "libs/multi-entrypoint/src",
   "prefix": "ngx-doc-gen",
   "targets": {
     "build": {
       "executor": "@nrwl/angular:package",
       "outputs": [
-        "dist/libs/multi-entrypoint"
+        "{workspaceRoot}/dist/libs/multi-entrypoint"
       ],
       "options": {
         "project": "libs/multi-entrypoint/ng-package.json"
@@ -25,10 +26,10 @@
     "test": {
       "executor": "@nrwl/jest:jest",
       "outputs": [
-        "coverage/libs/multi-entrypoint"
+        "{workspaceRoot}/coverage/libs/multi-entrypoint"
       ],
       "options": {
-        "jestConfig": "libs/multi-entrypoint/jest.config.js",
+        "jestConfig": "libs/multi-entrypoint/jest.config.ts",
         "passWithNoTests": true
       }
     },

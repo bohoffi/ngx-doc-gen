@@ -1,6 +1,7 @@
 {
+  "name": "ngx-doc-gen-demo",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
-  "root": "apps/ngx-doc-gen-demo",
   "sourceRoot": "apps/ngx-doc-gen-demo/src",
   "prefix": "ngx-doc-gen",
   "targets": {
@@ -88,10 +89,10 @@
     "test": {
       "executor": "@nrwl/jest:jest",
       "outputs": [
-        "coverage/apps/ngx-doc-gen-demo"
+        "{workspaceRoot}/coverage/apps/ngx-doc-gen-demo"
       ],
       "options": {
-        "jestConfig": "apps/ngx-doc-gen-demo/jest.config.js",
+        "jestConfig": "apps/ngx-doc-gen-demo/jest.config.ts",
         "passWithNoTests": true
       }
     }
