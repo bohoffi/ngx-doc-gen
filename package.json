@@ -3,7 +3,7 @@
   "scripts": {
     "ng": "nx",
     "nx": "nx",
-    "postinstall": "node ./decorate-angular-cli.js && ngcc --properties es2015 browser module main",
+    "postinstall": "node ./decorate-angular-cli.js && ngcc --properties es2020 browser module main",
     "demo:serve": "nx run ngx-doc-gen-demo:serve:development",
     "build": "nx run ngx-doc-gen:build",
     "lint": "nx run ngx-doc-gen:lint",
