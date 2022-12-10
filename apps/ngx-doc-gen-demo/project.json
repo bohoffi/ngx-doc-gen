@@ -1,6 +1,5 @@
 {
   "projectType": "application",
-  "root": "apps/ngx-doc-gen-demo",
   "sourceRoot": "apps/ngx-doc-gen-demo/src",
   "prefix": "ngx-doc-gen",
   "targets": {
