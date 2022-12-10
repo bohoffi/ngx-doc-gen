@@ -50,5 +50,6 @@
       "style": "scss"
     }
   },
-  "defaultProject": "ngx-doc-gen-demo"
+  "defaultProject": "ngx-doc-gen-demo",
+  "$schema": "./node_modules/nx/schemas/nx-schema.json"
 }
