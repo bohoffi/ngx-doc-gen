@@ -1,3 +1,4 @@
+/* eslint-disable */
 module.exports = {
   displayName: 'multi-entrypoint',
   preset: '../../jest.preset.js',

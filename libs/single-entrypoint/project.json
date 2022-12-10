@@ -1,6 +1,5 @@
 {
   "projectType": "library",
-  "root": "libs/single-entrypoint",
   "sourceRoot": "libs/single-entrypoint/src",
   "prefix": "ngx-doc-gen",
   "targets": {
@@ -28,7 +27,7 @@
         "coverage/libs/single-entrypoint"
       ],
       "options": {
-        "jestConfig": "libs/single-entrypoint/jest.config.js",
+        "jestConfig": "libs/single-entrypoint/jest.config.ts",
         "passWithNoTests": true
       }
     },

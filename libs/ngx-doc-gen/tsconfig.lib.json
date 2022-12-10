@@ -12,7 +12,8 @@
   },
   "exclude": [
     "**/*.spec.ts",
-    "**/__mocks__/*"
+    "**/__mocks__/*",
+    "jest.config.ts"
   ],
   "include": [
     "**/*.ts"

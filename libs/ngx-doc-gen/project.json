@@ -1,5 +1,4 @@
 {
-  "root": "libs/ngx-doc-gen",
   "sourceRoot": "libs/ngx-doc-gen/src",
   "projectType": "library",
   "targets": {
@@ -72,7 +71,7 @@
         "coverage/libs/ngx-doc-gen"
       ],
       "options": {
-        "jestConfig": "libs/ngx-doc-gen/jest.config.js"
+        "jestConfig": "libs/ngx-doc-gen/jest.config.ts"
       }
     }
   },

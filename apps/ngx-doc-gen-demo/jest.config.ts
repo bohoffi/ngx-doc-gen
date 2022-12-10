@@ -1,3 +1,4 @@
+/* eslint-disable */
 module.exports = {
   displayName: 'ngx-doc-gen-demo',
   preset: '../../jest.preset.js',
