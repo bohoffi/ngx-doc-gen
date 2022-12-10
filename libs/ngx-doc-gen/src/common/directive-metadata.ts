@@ -1,14 +1,16 @@
 import {
   ArrayLiteralExpression,
   CallExpression,
+  getDecorators,
   isCallExpression,
+  isClassDeclaration,
   NodeArray,
   ObjectLiteralExpression,
   PropertyAssignment,
   StringLiteral,
   SyntaxKind,
 } from 'typescript';
-import {CategorizedClassDoc} from './dgeni-definitions';
+import { CategorizedClassDoc } from './dgeni-definitions';
 
 /**
  * Determines the component or directive metadata from the specified Dgeni class doc. The resolved
@@ -27,12 +29,13 @@ import {CategorizedClassDoc} from './dgeni-definitions';
  */
 export function getDirectiveMetadata(classDoc: CategorizedClassDoc): Map<string, any> | null {
   const declaration = classDoc.symbol.valueDeclaration;
+  const decorators = declaration && isClassDeclaration(declaration) ? getDecorators(declaration) : null;
 
-  if (!declaration || !declaration.decorators) {
+  if (decorators?.length) {
     return null;
   }
 
-  const expression = declaration.decorators
+  const expression = decorators
     .filter(decorator => decorator.expression && isCallExpression(decorator.expression))
     .map(decorator => decorator.expression as CallExpression)
     .find(
