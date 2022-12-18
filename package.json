@@ -12,6 +12,7 @@
     "docs:generate": "npm run docs:single:generate && npm run docs:multi:generate",
     "docs:single:generate": "npm run build && nx run single-entrypoint:doc-gen",
     "docs:multi:generate": "npm run build && nx run multi-entrypoint:doc-gen",
+    "docs:standalone:generate": "npm run build && nx run standalone-api:doc-gen",
     "docs:bundle": "npm run docs:single:copy && npm run docs:multi:copy:one && npm run docs:multi:copy:two && npm run docs:multi:copy:three",
     "docs:single:copy": "cp ./dist/docs/single-test.html ./apps/ngx-doc-gen-demo/src/app/components/single-entrypoint/single-test.html",
     "docs:multi:copy:one": "cp ./dist/docs/multi-test-one.html ./apps/ngx-doc-gen-demo/src/app/components/multi-one/multi-test-one.html",
