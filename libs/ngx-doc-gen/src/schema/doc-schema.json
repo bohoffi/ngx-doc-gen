@@ -27,6 +27,13 @@
         "o"
       ]
     },
+    "templates": {
+      "description": "Directory to read the templates from - relative to the projects root. If omitted the default set will be used.",
+      "type": "string",
+      "aliases": [
+        "t"
+      ]
+    },
     "excludeBase": {
       "description": "A list of base classes to exclude from generating (e.g. 'Observable').",
       "type": "array",

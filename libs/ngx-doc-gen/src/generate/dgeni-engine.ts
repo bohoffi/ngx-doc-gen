@@ -11,27 +11,49 @@ import { DocsPrivateFilter } from '../processors/docs-private-filter';
 import { EntryPointGrouper } from '../processors/entry-point-grouper';
 import { ErrorUnknownJsdocTagsProcessor } from '../processors/error-unknown-jsdoc-tags';
 import { FilterDuplicateExports } from '../processors/filter-duplicate-exports';
-import { MergeInheritedProperties, mergeInheritedProperties } from '../processors/merge-inherited-properties';
-import { ResolveInheritedDocs, resolveInheritedDocs } from '../processors/resolve-inherited-docs';
+import {
+  MergeInheritedProperties,
+  mergeInheritedProperties,
+} from '../processors/merge-inherited-properties';
+import {
+  ResolveInheritedDocs,
+  resolveInheritedDocs,
+} from '../processors/resolve-inherited-docs';
 import { NgxDocGenOptions } from '../schema/ngx-doc-gen.options';
 import { LogLevel } from '../types/log-level';
 import { collectEntrypoints, createDgeniPackage } from '../utils/package-utils';
 import { patchLogService } from '../utils/patch-log-service';
 import { NgPackage } from 'ng-packagr/lib/ng-package/package';
 
-export const generate = async (options: NgxDocGenOptions, workingDirectory: string, projectRoot: string): Promise<string> => {
+export const generate = async (
+  options: NgxDocGenOptions,
+  workingDirectory: string,
+  projectRoot: string
+): Promise<string> => {
   let projectPath = path.join(workingDirectory, projectRoot);
-  projectPath = path.isAbsolute(projectPath) ? projectPath : path.resolve(projectPath);
+  projectPath = path.isAbsolute(projectPath)
+    ? projectPath
+    : path.resolve(projectPath);
 
   const ngPackage = await discoverPackages({
-    project: projectPath
+    project: projectPath,
   });
 
-  return await generateDocumentation(ngPackage, workingDirectory, options);
+  return await generateDocumentation(
+    ngPackage,
+    workingDirectory,
+    options,
+    projectPath
+  );
 };
 
-const generateDocumentation = async (ngPackge: NgPackage, workingDirectory: string, options: NgxDocGenOptions): Promise<string> => {
-  const outputDir = path.join(workingDirectory, options.outputPath)
+const generateDocumentation = async (
+  ngPackge: NgPackage,
+  workingDirectory: string,
+  options: NgxDocGenOptions,
+  projectPath: string
+): Promise<string> => {
+  const outputDir = path.join(workingDirectory, options.outputPath);
   const dgeniPackage = createDgeniPackage(ngPackge.primary.moduleId);
 
   setProcessors(dgeniPackage, options);
@@ -45,7 +67,14 @@ const generateDocumentation = async (ngPackge: NgPackage, workingDirectory: stri
   configureCostumJsDocTags(dgeniPackage, options);
   configureIgnoreDefaultExports(dgeniPackage);
   configureTemplateEngine(dgeniPackage);
-  configureTypeScriptModule(dgeniPackage, ngPackge, outputDir, workingDirectory);
+  configureTypeScriptModule(
+    dgeniPackage,
+    ngPackge,
+    outputDir,
+    workingDirectory,
+    projectPath,
+    options
+  );
 
   return await new Dgeni([dgeniPackage])
     .generate()
@@ -55,7 +84,10 @@ const generateDocumentation = async (ngPackge: NgPackage, workingDirectory: stri
 /**
  * Sets the different processors used to transform to code.
  */
-const setProcessors = (dgeniPackage: Package, options: NgxDocGenOptions): void => {
+const setProcessors = (
+  dgeniPackage: Package,
+  options: NgxDocGenOptions
+): void => {
   // Processor that resolves inherited docs of class docs. The resolved docs will
   // be added to the pipeline so that the JSDoc processors can capture these too.
   // Note: needs to use a factory function since the processor relies on DI.
@@ -68,10 +100,10 @@ const setProcessors = (dgeniPackage: Package, options: NgxDocGenOptions): void =
   // Note: needs to use a factory function since the processor relies on DI.
   dgeniPackage.processor(mergeInheritedProperties);
 
-
-
   // Processor that filters out symbols that should not be shown in the docs.
-  dgeniPackage.processor(new DocsPrivateFilter(options.docsPublic, options.docsPrivate));
+  dgeniPackage.processor(
+    new DocsPrivateFilter(options.docsPublic, options.docsPrivate)
+  );
 
   // Processor that throws an error if API docs with unknown JSDoc tags are discovered.
   dgeniPackage.processor(new ErrorUnknownJsdocTagsProcessor());
@@ -90,7 +122,10 @@ const setProcessors = (dgeniPackage: Package, options: NgxDocGenOptions): void =
 /**
  * Sets public, private and breakingChange tags at Categorizer.
  */
-const configureCategorizer = (dgeniPackage: Package, options: NgxDocGenOptions): void => {
+const configureCategorizer = (
+  dgeniPackage: Package,
+  options: NgxDocGenOptions
+): void => {
   dgeniPackage.config(function (categorizer: Categorizer) {
     categorizer.docsPublic = options.docsPublic;
     categorizer.docsPrivate = options.docsPrivate;
@@ -101,8 +136,14 @@ const configureCategorizer = (dgeniPackage: Package, options: NgxDocGenOptions):
 /**
  * Sets excluded bases at ResolveInheritedDocs.
  */
-const configureExcludeBase = (dgeniPackage: Package, excludeBase?: string[]): void => {
-  dgeniPackage.config(function (resolveInheritedDocs: ResolveInheritedDocs, mergeInheritedProperties: MergeInheritedProperties) {
+const configureExcludeBase = (
+  dgeniPackage: Package,
+  excludeBase?: string[]
+): void => {
+  dgeniPackage.config(function (
+    resolveInheritedDocs: ResolveInheritedDocs,
+    mergeInheritedProperties: MergeInheritedProperties
+  ) {
     resolveInheritedDocs.excludeBase = excludeBase || [];
     mergeInheritedProperties.excludeBase = excludeBase || [];
   });
@@ -110,7 +151,7 @@ const configureExcludeBase = (dgeniPackage: Package, excludeBase?: string[]): vo
 
 const configureLogging = (dgeniPackage: Package, logLevel: LogLevel): void => {
   dgeniPackage.config(function (log: any) {
-    return log.level = logLevel;
+    return (log.level = logLevel);
   });
   dgeniPackage.config(function (log: any) {
     return patchLogService(log);
@@ -128,21 +169,27 @@ const disbableNativeReadFilesProcessor = (dgeniPackage: Package): void => {
 const configureComputPathsProcessor = (dgeniPackage: Package): void => {
   // Configure the output path for written files (i.e., file names).
   dgeniPackage.config(function (computePathsProcessor: any) {
-    computePathsProcessor.pathTemplates = [{
-      docTypes: ['entry-point'],
-      pathTemplate: '${name}',
-      outputPathTemplate: '${name}.html',
-    }];
+    computePathsProcessor.pathTemplates = [
+      {
+        docTypes: ['entry-point'],
+        pathTemplate: '${name}',
+        outputPathTemplate: '${name}.html',
+      },
+    ];
   });
 };
 
-const configureCostumJsDocTags = (dgeniPackage: Package, options: NgxDocGenOptions): void => {
+const configureCostumJsDocTags = (
+  dgeniPackage: Package,
+  options: NgxDocGenOptions
+): void => {
   dgeniPackage.config(function (parseTagsProcessor: any) {
-    parseTagsProcessor.tagDefinitions = parseTagsProcessor.tagDefinitions.concat([
-      options.docsPublic,
-      options.docsPrivate,
-      ...options.customTags
-    ]);
+    parseTagsProcessor.tagDefinitions =
+      parseTagsProcessor.tagDefinitions.concat([
+        options.docsPublic,
+        options.docsPrivate,
+        ...options.customTags,
+      ]);
   });
 };
 
@@ -190,16 +237,18 @@ const configureTypeScriptModule = (
   dgeniPackage: Package,
   ngPackage: NgPackage,
   outputDirectory: string,
-  workingDirectory: string
+  workingDirectory: string,
+  projectPath: string,
+  options: NgxDocGenOptions
 ): void => {
-  // Configure the Dgeni docs package to respect our passed options from the Bazel rule.
-  dgeniPackage.config(function (readTypeScriptModules: ReadTypeScriptModules,
+  dgeniPackage.config(function (
+    readTypeScriptModules: ReadTypeScriptModules,
     tsParser: TsParser,
     entryPointGrouper: EntryPointGrouper,
     templateFinder: any,
     writeFilesProcessor: any,
-    readFilesProcessor: any) {
-
+    readFilesProcessor: any
+  ) {
     const packagePath = ngPackage.src;
     // Set the base path for the "readFilesProcessor" to the execroot. This is necessary because
     // otherwise the "writeFilesProcessor" is not able to write to the specified output path.
@@ -215,7 +264,7 @@ const configureTypeScriptModule = (
     tsParser.options.paths = {};
 
     const packageEntrypoints = collectEntrypoints(ngPackage);
-    packageEntrypoints.forEach(ep => {
+    packageEntrypoints.forEach((ep) => {
       const entrypointIndexPath = `${ep.entryFilePath}`;
 
       entryPointGrouper.entryPoints.push(ep);
@@ -231,12 +280,25 @@ const configureTypeScriptModule = (
     // as the Angular packages which might be needed for doc items. e.g. if a class implements
     // the "AfterViewInit" interface from "@angular/core". This needs to be relative to the
     // "baseUrl" that has been specified for the "tsParser" compiler options.
-    tsParser.options.paths['*'] = [path.join(workingDirectory, 'node_modules/*')];
+    tsParser.options.paths['*'] = [
+      path.join(workingDirectory, 'node_modules/*'),
+    ];
 
-    // Since our base directory is the Bazel execroot, we need to make sure that Dgeni can
-    // find all templates needed to output the API docs.
-    // templateFinder.templateFolders = [path.join(__dirname, 'templates')];
-    templateFinder.templateFolders = [path.join(path.resolve(__dirname, '..'), 'templates')];
+    // Configure the template location
+    const templateFolders: string[] = [];
+    if (options.templates) {
+      let customTemplatesDirectory = path.join(projectPath, options.templates);
+      customTemplatesDirectory = path.isAbsolute(customTemplatesDirectory)
+        ? customTemplatesDirectory
+        : path.resolve(customTemplatesDirectory);
+      templateFolders.push(customTemplatesDirectory);
+    } else {
+      templateFolders.push(
+        path.join(path.resolve(__dirname, '..'), 'templates')
+      );
+    }
+
+    templateFinder.templateFolders = templateFolders;
 
     // The output path for files will be computed by joining the output folder with the base path
     // from the "readFilesProcessors". Since the base path is the execroot, we can just use

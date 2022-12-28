@@ -11,13 +11,17 @@ export interface NgxDocGenOptions {
    */
   outputPath?: string;
   /**
+   * Directory to read the templates from - relative to the projects root. If omitted the default set will be used.
+   */
+  templates?: string;
+  /**
    * A list of base classes to exclude from generating (e.g. 'Observable')
    */
   excludeBase?: string[];
   /**
    * Configures tag definition for the Dgeni JSDoc processor not supported by JSDoc.
    */
-  customTags?: TagDefinition[],
+  customTags?: TagDefinition[];
   /**
    * Tag to enforce documentation of usually private symbols. Only applies to symbols at least exported. Defaults to `docs-public`.
    */
