@@ -2,6 +2,7 @@
   "version": 2,
   "projects": {
     "builder-domain": "libs/builder/domain",
+    "builder-feature-template": "libs/builder/feature-template",
     "multi-entrypoint": "libs/multi-entrypoint",
     "ngx-doc-gen": "libs/ngx-doc-gen",
     "ngx-doc-gen-demo": "apps/ngx-doc-gen-demo",

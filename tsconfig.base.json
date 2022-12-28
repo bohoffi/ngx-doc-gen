@@ -38,6 +38,9 @@
       ],
       "ngx-doc-gen/builder/domain": [
         "libs/builder/domain/src/index.ts"
+      ],
+      "ngx-doc-gen/builder/template": [
+        "libs/builder/feature-template/src/index.ts"
       ]
     }
   },
