@@ -90,6 +90,14 @@ export function getPipeName(classDoc: CategorizedClassDoc): string | undefined {
   return undefined;
 }
 
+export function isStandalone(classDoc: CategorizedClassDoc): boolean {
+  if (classDoc.directiveMetadata) {
+    const standalone = classDoc.directiveMetadata.get('standalone');
+    return standalone != null && `${standalone}` !== 'false';
+  }
+  return false;
+}
+
 export function hasMemberDecorator(
   doc: MemberDoc,
   decoratorName: string

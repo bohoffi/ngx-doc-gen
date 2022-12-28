@@ -35,6 +35,11 @@
   <span class="docs-api-class-selector-label">Name:</span>
   <span class="docs-api-class-selector-name">{$ class.pipeName $}</span>
 </p>
+{%- endif -%} {%- if class.isStandalone -%}
+<p class="docs-api-directive-selectors">
+  <span class="docs-api-class-selector-label">Standalone:</span>
+  <span class="docs-api-class-selector-name">{$ class.isStandalone $}</span>
+</p>
 {%- endif -%} {%- if class.directiveExportAs -%}
 <span class="docs-api-class-export-label">Exported as:</span>
 <span class="docs-api-class-export-name">{$ class.directiveExportAs $}</span>

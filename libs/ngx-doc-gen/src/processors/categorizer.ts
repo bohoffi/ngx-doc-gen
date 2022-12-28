@@ -13,6 +13,7 @@ import {
   isNgModule,
   isPipe,
   getPipeName,
+  isStandalone,
 } from '../common/decorators';
 import {
   CategorizedClassLikeDoc,
@@ -161,9 +162,11 @@ export class Categorizer implements Processor {
       classDoc.isDirective = true;
       classDoc.directiveExportAs = classDoc.directiveMetadata.get('exportAs');
       classDoc.directiveSelectors = getDirectiveSelectors(classDoc);
+      classDoc.isStandalone = isStandalone(classDoc);
     } else if (isPipe(classDoc) && classDoc.directiveMetadata) {
       classDoc.isPipe = true;
       classDoc.pipeName = getPipeName(classDoc);
+      classDoc.isStandalone = isStandalone(classDoc);
     } else if (isService(classDoc)) {
       classDoc.isService = true;
     } else if (isNgModule(classDoc)) {

@@ -1,5 +1,6 @@
 import {
   ArrayLiteralExpression,
+  BooleanLiteral,
   CallExpression,
   getDecorators,
   isCallExpression,
@@ -85,6 +86,17 @@ export function getDirectiveMetadata(
         resultMetadata.set(
           prop.name.getText(),
           (prop.initializer as StringLiteral).text
+        );
+      }
+
+      // Support BooleanLiteral assignments
+      if (
+        prop.initializer.kind === SyntaxKind.TrueKeyword ||
+        prop.initializer.kind === SyntaxKind.FalseKeyword
+      ) {
+        resultMetadata.set(
+          prop.name.getText(),
+          prop.initializer.kind === SyntaxKind.TrueKeyword
         );
       }
     }

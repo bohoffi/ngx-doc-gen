@@ -33,6 +33,7 @@ export interface CategorizedClassDoc
     CategorizedClassLikeDoc {
   isDirective: boolean;
   isPipe: boolean;
+  isStandalone: boolean;
   isService: boolean;
   isNgModule: boolean;
   isTestHarness: boolean;
