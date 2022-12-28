@@ -4,6 +4,7 @@
     "multi-entrypoint": "libs/multi-entrypoint",
     "ngx-doc-gen": "libs/ngx-doc-gen",
     "ngx-doc-gen-demo": "apps/ngx-doc-gen-demo",
-    "single-entrypoint": "libs/single-entrypoint"
+    "single-entrypoint": "libs/single-entrypoint",
+    "standalone-api": "libs/standalone-api"
   }
 }

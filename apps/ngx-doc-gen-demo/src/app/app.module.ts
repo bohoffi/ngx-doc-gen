@@ -14,39 +14,53 @@ import { MultiEntrypointComponent } from './components/multi-entrypoint/multi-en
 import { MultiOneComponent } from './components/multi-one/multi-one.component';
 import { MultiTwoComponent } from './components/multi-two/multi-two.component';
 import { MultiThreeComponent } from './components/multi-three/multi-three.component';
+import { StandaloneApiComponent } from './components/standalone-api/standalone-api.component';
 
 const matModules = [
   MatButtonModule,
   MatExpansionModule,
   MatIconModule,
-  MatToolbarModule
+  MatToolbarModule,
 ];
 
 const ROUTES: Routes = [
   {
     path: '',
-    component: HomeComponent
+    component: HomeComponent,
   },
   {
     path: 'single-entrypoint',
-    component: SingleEntrypointComponent
+    component: SingleEntrypointComponent,
   },
   {
     path: 'multi-entrypoint',
-    component: MultiEntrypointComponent
-  }
+    component: MultiEntrypointComponent,
+  },
+  {
+    path: 'standalone-api',
+    component: StandaloneApiComponent,
+  },
 ];
 
 @NgModule({
-  declarations: [AppComponent, SingleEntrypointComponent, HomeComponent, MultiEntrypointComponent, MultiOneComponent, MultiTwoComponent, MultiThreeComponent],
+  declarations: [
+    AppComponent,
+    SingleEntrypointComponent,
+    HomeComponent,
+    MultiEntrypointComponent,
+    MultiOneComponent,
+    MultiTwoComponent,
+    MultiThreeComponent,
+    StandaloneApiComponent,
+  ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     RouterModule.forRoot(ROUTES),
 
-    matModules
+    matModules,
   ],
   providers: [],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

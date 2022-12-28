@@ -1,0 +1,34 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "standalone-api",
+  "projectType": "library",
+  "sourceRoot": "libs/standalone-api/src",
+  "prefix": "ngx-doc-gen",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/angular:ng-packagr-lite",
+      "outputs": [
+        "{workspaceRoot}/dist/{projectRoot}"
+      ],
+      "options": {
+        "project": "libs/standalone-api/ng-package.json"
+      },
+      "configurations": {
+        "production": {
+          "tsConfig": "libs/standalone-api/tsconfig.lib.prod.json"
+        },
+        "development": {
+          "tsConfig": "libs/standalone-api/tsconfig.lib.json"
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "doc-gen": {
+      "executor": "./dist/libs/ngx-doc-gen:generate",
+      "options": {
+        "outputPath": "./dist/docs"
+      }
+    }
+  },
+  "tags": []
+}

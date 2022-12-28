@@ -2,17 +2,26 @@ import { ApiDoc } from 'dgeni-packages/typescript/api-doc-types/ApiDoc';
 import { ClassExportDoc } from 'dgeni-packages/typescript/api-doc-types/ClassExportDoc';
 import { MemberDoc } from 'dgeni-packages/typescript/api-doc-types/MemberDoc';
 import { PropertyMemberDoc } from 'dgeni-packages/typescript/api-doc-types/PropertyMemberDoc';
-import { CategorizedClassDoc, DeprecationInfo, HasDecoratorsDoc } from './dgeni-definitions';
+import {
+  CategorizedClassDoc,
+  DeprecationInfo,
+  HasDecoratorsDoc,
+} from './dgeni-definitions';
 import { findJsDocTag, hasJsDocTag } from './tags';
 
 export function isMethod(doc: MemberDoc): boolean {
-  // eslint-disable-next-line no-prototype-builtins
-  return doc.hasOwnProperty('parameters') && !doc.isGetAccessor && !doc.isSetAccessor;
+  return (
+    // eslint-disable-next-line no-prototype-builtins
+    doc.hasOwnProperty('parameters') && !doc.isGetAccessor && !doc.isSetAccessor
+  );
 }
 
 export function isGenericTypeParameter(doc: MemberDoc): boolean {
   if (doc.containerDoc instanceof ClassExportDoc) {
-    return !!doc.containerDoc.typeParams && `<${doc.name}>` === doc.containerDoc.typeParams;
+    return (
+      !!doc.containerDoc.typeParams &&
+      `<${doc.name}>` === doc.containerDoc.typeParams
+    );
   }
   return false;
 }
@@ -31,7 +40,13 @@ export function isProperty(doc: MemberDoc): boolean {
 }
 
 export function isDirective(doc: ClassExportDoc): boolean {
-  return hasClassDecorator(doc, 'Component') || hasClassDecorator(doc, 'Directive');
+  return (
+    hasClassDecorator(doc, 'Component') || hasClassDecorator(doc, 'Directive')
+  );
+}
+
+export function isPipe(doc: ClassExportDoc): boolean {
+  return hasClassDecorator(doc, 'Pipe');
 }
 
 export function isService(doc: ClassExportDoc): boolean {
@@ -51,37 +66,67 @@ export function isPrimaryExportDoc(doc: ApiDoc): boolean {
   return hasJsDocTag(doc, 'docs-primary-export');
 }
 
-export function getDirectiveSelectors(classDoc: CategorizedClassDoc): string[] | undefined {
+export function getDirectiveSelectors(
+  classDoc: CategorizedClassDoc
+): string[] | undefined {
   if (classDoc.directiveMetadata) {
-    const directiveSelectors: string = classDoc.directiveMetadata.get('selector');
+    const directiveSelectors: string =
+      classDoc.directiveMetadata.get('selector');
 
     if (directiveSelectors) {
       return directiveSelectors
         .replace(/[\r\n]/g, '')
         .split(/\s*,\s*/)
-        .filter(s => s !== '');
+        .filter((s) => s !== '');
     }
   }
   return undefined;
 }
 
-export function hasMemberDecorator(doc: MemberDoc, decoratorName: string): boolean {
+export function getPipeName(classDoc: CategorizedClassDoc): string | undefined {
+  if (classDoc.directiveMetadata) {
+    return classDoc.directiveMetadata.get('name');
+  }
+  return undefined;
+}
+
+export function isStandalone(classDoc: CategorizedClassDoc): boolean {
+  if (classDoc.directiveMetadata) {
+    const standalone = classDoc.directiveMetadata.get('standalone');
+    return standalone != null && `${standalone}` !== 'false';
+  }
+  return false;
+}
+
+export function hasMemberDecorator(
+  doc: MemberDoc,
+  decoratorName: string
+): boolean {
   return doc.docType == 'member' && hasDecorator(doc, decoratorName);
 }
 
-export function hasClassDecorator(doc: ClassExportDoc, decoratorName: string): boolean {
+export function hasClassDecorator(
+  doc: ClassExportDoc,
+  decoratorName: string
+): boolean {
   return doc.docType == 'class' && hasDecorator(doc, decoratorName);
 }
 
-export function hasDecorator(doc: HasDecoratorsDoc, decoratorName: string): boolean {
+export function hasDecorator(
+  doc: HasDecoratorsDoc,
+  decoratorName: string
+): boolean {
   return (
     !!doc.decorators &&
     doc.decorators.length > 0 &&
-    doc.decorators.some(d => d.name == decoratorName)
+    doc.decorators.some((d) => d.name == decoratorName)
   );
 }
 
-export function getBreakingChange(doc: ApiDoc, breakingChangeTag: string): string | null {
+export function getBreakingChange(
+  doc: ApiDoc,
+  breakingChangeTag: string
+): string | null {
   const breakingChange = findJsDocTag(doc, breakingChangeTag);
   return breakingChange ? breakingChange.description : null;
 }
@@ -90,11 +135,17 @@ export function getBreakingChange(doc: ApiDoc, breakingChangeTag: string): strin
  * Decorates public exposed docs. Creates a property on the doc that indicates whether
  * the item is deprecated or not.
  */
-export function decorateDeprecatedDoc(doc: ApiDoc & DeprecationInfo, breakingChangeTag: string) {
+export function decorateDeprecatedDoc(
+  doc: ApiDoc & DeprecationInfo,
+  breakingChangeTag: string
+) {
   doc.isDeprecated = isDeprecatedDoc(doc);
   doc.breakingChange = getBreakingChange(doc, breakingChangeTag);
 
   if (doc.isDeprecated && !doc.breakingChange) {
-    console.warn(`Warning: There is a deprecated item without a @${breakingChangeTag} tag.`, doc.id);
+    console.warn(
+      `Warning: There is a deprecated item without a @${breakingChangeTag} tag.`,
+      doc.id
+    );
   }
 }

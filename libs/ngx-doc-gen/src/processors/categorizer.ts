@@ -3,7 +3,18 @@ import { ClassLikeExportDoc } from 'dgeni-packages/typescript/api-doc-types/Clas
 import { MemberDoc } from 'dgeni-packages/typescript/api-doc-types/MemberDoc';
 import ts from 'typescript';
 import { getInheritedDocsOfClass } from '../common/class-inheritance';
-import { isMethod, isProperty, decorateDeprecatedDoc, isDirective, getDirectiveSelectors, isService, isNgModule } from '../common/decorators';
+import {
+  isMethod,
+  isProperty,
+  decorateDeprecatedDoc,
+  isDirective,
+  getDirectiveSelectors,
+  isService,
+  isNgModule,
+  isPipe,
+  getPipeName,
+  isStandalone,
+} from '../common/decorators';
 import {
   CategorizedClassLikeDoc,
   CategorizedMethodMemberDoc,
@@ -11,20 +22,28 @@ import {
   CategorizedClassDoc,
   CategorizedFunctionExportDoc,
   CategorizedConstExportDoc,
-  CategorizedTypeAliasExportDoc
+  CategorizedTypeAliasExportDoc,
 } from '../common/dgeni-definitions';
 import { getDirectiveMetadata } from '../common/directive-metadata';
 import { normalizeFunctionParameters } from '../common/normalize-function-parameters';
 import { isPublicDoc } from '../common/private-docs';
-import { getInputBindingData, getOutputBindingData } from '../common/property-bindings';
-import { sortCategorizedMethodMembers, sortCategorizedPropertyMembers } from '../common/sort-members';
+import {
+  getInputBindingData,
+  getOutputBindingData,
+} from '../common/property-bindings';
+import {
+  sortCategorizedMethodMembers,
+  sortCategorizedPropertyMembers,
+} from '../common/sort-members';
 
 /**
  * Factory function for the "Categorizer" processor. Dgeni does not support
  * dependency injection for classes. The symbol docs map is provided by the
  * TypeScript dgeni package.
  */
-export function categorizer(exportSymbolsToDocsMap: Map<ts.Symbol, ClassLikeExportDoc>) {
+export function categorizer(
+  exportSymbolsToDocsMap: Map<ts.Symbol, ClassLikeExportDoc>
+) {
   return new Categorizer(exportSymbolsToDocsMap);
 }
 
@@ -45,23 +64,25 @@ export class Categorizer implements Processor {
 
   constructor(
     /** Shared map that can be used to resolve docs through symbols. */
-    private _exportSymbolsToDocsMap: Map<ts.Symbol, ClassLikeExportDoc>,
-  ) { }
+    private _exportSymbolsToDocsMap: Map<ts.Symbol, ClassLikeExportDoc>
+  ) {}
 
   $process(docs: DocCollection) {
     docs
-      .filter(doc => doc.docType === 'class' || doc.docType === 'interface')
-      .forEach(doc => this._decorateClassLikeDoc(doc));
+      .filter((doc) => doc.docType === 'class' || doc.docType === 'interface')
+      .forEach((doc) => this._decorateClassLikeDoc(doc));
 
     docs
-      .filter(doc => doc.docType === 'function')
-      .forEach(doc => this._decorateFunctionExportDoc(doc));
-
-    docs.filter(doc => doc.docType === 'const').forEach(doc => this._decorateConstExportDoc(doc));
+      .filter((doc) => doc.docType === 'function')
+      .forEach((doc) => this._decorateFunctionExportDoc(doc));
 
     docs
-      .filter(doc => doc.docType === 'type-alias')
-      .forEach(doc => this._decorateTypeAliasExportDoc(doc));
+      .filter((doc) => doc.docType === 'const')
+      .forEach((doc) => this._decorateConstExportDoc(doc));
+
+    docs
+      .filter((doc) => doc.docType === 'type-alias')
+      .forEach((doc) => this._decorateTypeAliasExportDoc(doc));
   }
 
   /**
@@ -85,8 +106,8 @@ export class Categorizer implements Processor {
     }
 
     // Call decorate hooks that can modify the method and property docs.
-    classLikeDoc.methods.forEach(doc => this._decorateMethodDoc(doc));
-    classLikeDoc.properties.forEach(doc => this._decoratePropertyDoc(doc));
+    classLikeDoc.methods.forEach((doc) => this._decorateMethodDoc(doc));
+    classLikeDoc.properties.forEach((doc) => this._decoratePropertyDoc(doc));
 
     decorateDeprecatedDoc(classLikeDoc, this.breakingChange);
 
@@ -105,26 +126,34 @@ export class Categorizer implements Processor {
     // Classes can only extend a single class. This means that there can't be multiple extend
     // clauses for the Dgeni document. To make the template syntax simpler and more readable,
     // store the extended class in a variable.
-    classDoc.extendedDoc = classDoc.extendsClauses[0] ? classDoc.extendsClauses[0].doc : undefined;
+    classDoc.extendedDoc = classDoc.extendsClauses[0]
+      ? classDoc.extendsClauses[0].doc
+      : undefined;
     classDoc.directiveMetadata = getDirectiveMetadata(classDoc);
-    classDoc.inheritedDocs = getInheritedDocsOfClass(classDoc, this._exportSymbolsToDocsMap);
+    classDoc.inheritedDocs = getInheritedDocsOfClass(
+      classDoc,
+      this._exportSymbolsToDocsMap
+    );
 
     classDoc.methods.push(
       ...(classDoc.statics
         .filter(isMethod)
-        .filter(filterDuplicateMembers) as CategorizedMethodMemberDoc[]),
+        .filter(filterDuplicateMembers) as CategorizedMethodMemberDoc[])
     );
 
     classDoc.properties.push(
       ...(classDoc.statics
         .filter(isProperty)
-        .filter(filterDuplicateMembers) as CategorizedPropertyMemberDoc[]),
+        .filter(filterDuplicateMembers) as CategorizedPropertyMemberDoc[])
     );
 
     // In case the extended document is not public, we don't want to print it in the
     // rendered class API doc. This causes confusion and also is not helpful as the
     // extended document is not part of the docs and cannot be viewed.
-    if (classDoc.extendedDoc !== undefined && !isPublicDoc(classDoc.extendedDoc, this.docsPublic, this.docsPrivate)) {
+    if (
+      classDoc.extendedDoc !== undefined &&
+      !isPublicDoc(classDoc.extendedDoc, this.docsPublic, this.docsPrivate)
+    ) {
       classDoc.extendedDoc = undefined;
     }
 
@@ -133,6 +162,11 @@ export class Categorizer implements Processor {
       classDoc.isDirective = true;
       classDoc.directiveExportAs = classDoc.directiveMetadata.get('exportAs');
       classDoc.directiveSelectors = getDirectiveSelectors(classDoc);
+      classDoc.isStandalone = isStandalone(classDoc);
+    } else if (isPipe(classDoc) && classDoc.directiveMetadata) {
+      classDoc.isPipe = true;
+      classDoc.pipeName = getPipeName(classDoc);
+      classDoc.isStandalone = isStandalone(classDoc);
     } else if (isService(classDoc)) {
       classDoc.isService = true;
     } else if (isNgModule(classDoc)) {
@@ -155,7 +189,9 @@ export class Categorizer implements Processor {
    * Method that will be called for each function export doc. The parameters for the functions
    * will be normalized, so that they can be easily used inside of Dgeni templates.
    */
-  private _decorateFunctionExportDoc(functionDoc: CategorizedFunctionExportDoc) {
+  private _decorateFunctionExportDoc(
+    functionDoc: CategorizedFunctionExportDoc
+  ) {
     normalizeFunctionParameters(functionDoc);
     decorateDeprecatedDoc(functionDoc, this.breakingChange);
   }
@@ -188,14 +224,20 @@ export class Categorizer implements Processor {
         ? (propertyDoc.containerDoc as CategorizedClassDoc).directiveMetadata
         : null;
 
-    const inputMetadata = metadata ? getInputBindingData(propertyDoc, metadata) : null;
-    const outputMetadata = metadata ? getOutputBindingData(propertyDoc, metadata) : null;
+    const inputMetadata = metadata
+      ? getInputBindingData(propertyDoc, metadata)
+      : null;
+    const outputMetadata = metadata
+      ? getOutputBindingData(propertyDoc, metadata)
+      : null;
 
     propertyDoc.isDirectiveInput = !!inputMetadata;
-    propertyDoc.directiveInputAlias = (inputMetadata && inputMetadata.alias) || '';
+    propertyDoc.directiveInputAlias =
+      (inputMetadata && inputMetadata.alias) || '';
 
     propertyDoc.isDirectiveOutput = !!outputMetadata;
-    propertyDoc.directiveOutputAlias = (outputMetadata && outputMetadata.alias) || '';
+    propertyDoc.directiveOutputAlias =
+      (outputMetadata && outputMetadata.alias) || '';
   }
 
   /**
@@ -210,7 +252,9 @@ export class Categorizer implements Processor {
         // Add each method overload to the methods that will be shown in the docs.
         // Note that we cannot add the overloads immediately to the methods array because
         // that would cause the iteration to visit the new overloads.
-        methodsToAdd.push(...(methodDoc.overloads as CategorizedMethodMemberDoc[]));
+        methodsToAdd.push(
+          ...(methodDoc.overloads as CategorizedMethodMemberDoc[])
+        );
 
         // Remove the base method for the overloads from the documentation.
         classDoc.methods.splice(index, 1);
@@ -225,11 +269,15 @@ export class Categorizer implements Processor {
    * test harness classes by checking the inheritance chain for "ComponentHarness".
    */
   private _isTestHarness(doc: CategorizedClassDoc): boolean {
-    return doc.inheritedDocs.some(d => d.name === 'ComponentHarness');
+    return doc.inheritedDocs.some((d) => d.name === 'ComponentHarness');
   }
 }
 
 /** Filters any duplicate classDoc members from an array */
-function filterDuplicateMembers(item: MemberDoc, _index: number, array: MemberDoc[]) {
-  return array.filter(memberDoc => memberDoc.name === item.name)[0] === item;
+function filterDuplicateMembers(
+  item: MemberDoc,
+  _index: number,
+  array: MemberDoc[]
+) {
+  return array.filter((memberDoc) => memberDoc.name === item.name)[0] === item;
 }

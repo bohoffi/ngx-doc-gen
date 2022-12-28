@@ -48,6 +48,9 @@ export class EntryPointDoc {
   /** List of categorized class docs that are defining a directive. */
   directives: CategorizedClassDoc[] = [];
 
+  /** List of categorized class docs that are defining a pipe. */
+  pipes: CategorizedClassDoc[] = [];
+
   /** List of categorized class docs that are defining a service. */
   services: CategorizedClassDoc[] = [];
 
@@ -97,7 +100,7 @@ export class EntryPointGrouper implements Processor {
   $process(docs: DocCollection) {
     const entryPointsDocs = new Map<string, EntryPointDoc>();
 
-    docs.forEach(doc => {
+    docs.forEach((doc) => {
       const docEntryPoint = this._getDocumentEntryPoint(doc);
 
       const entryPointName = docEntryPoint.flatModuleFile;
@@ -117,6 +120,8 @@ export class EntryPointGrouper implements Processor {
       // Put this doc into the appropriate list in the entry-point doc.
       if (doc.isDirective) {
         entryPointDoc.directives.push(doc);
+      } else if (doc.isPipe) {
+        entryPointDoc.pipes.push(doc);
       } else if (doc.isService) {
         entryPointDoc.services.push(doc);
       } else if (doc.isNgModule) {
@@ -144,36 +149,45 @@ export class EntryPointGrouper implements Processor {
     // For each entry-point where no explicit primary export has been specified
     // through the "@docs-primary-export" tag, we determine a primary export by
     // looking for possible "NgModule" classes or test harnesses.
-    entryPointsDocs.forEach(entryPoint => {
+    entryPointsDocs.forEach((entryPoint) => {
       if (entryPoint.primaryExportName !== null) {
         return;
       }
 
-      const ngModuleExport = this._findBestPrimaryExport(entryPoint.exportedNgModules);
+      const ngModuleExport = this._findBestPrimaryExport(
+        entryPoint.exportedNgModules
+      );
       if (ngModuleExport !== null) {
         entryPoint.primaryExportName = ngModuleExport.name;
         return;
       }
-      const testHarnessExport = this._findBestPrimaryExport(entryPoint.testHarnesses);
+      const testHarnessExport = this._findBestPrimaryExport(
+        entryPoint.testHarnesses
+      );
       if (testHarnessExport !== null) {
         entryPoint.primaryExportName = testHarnessExport.name;
       }
     });
 
-    return Array.from(entryPointsDocs.values()).filter(entrypoint => this.hasExports(entrypoint));
+    return Array.from(entryPointsDocs.values()).filter((entrypoint) =>
+      this.hasExports(entrypoint)
+    );
   }
 
   private hasExports(entrypoint: EntryPointDoc): boolean {
-    return !!entrypoint.aliases.length
-      || !!entrypoint.classes.length
-      || !!entrypoint.constants.length
-      || !!entrypoint.directives.length
-      || !!entrypoint.exportedNgModules.length
-      || !!entrypoint.functions.length
-      || !!entrypoint.interfaces.length
-      || !!entrypoint.services.length
-      || !!entrypoint.testHarnesses.length
-      || !!entrypoint.typeAliases.length;
+    return (
+      !!entrypoint.aliases.length ||
+      !!entrypoint.classes.length ||
+      !!entrypoint.constants.length ||
+      !!entrypoint.directives.length ||
+      !!entrypoint.pipes.length ||
+      !!entrypoint.exportedNgModules.length ||
+      !!entrypoint.functions.length ||
+      !!entrypoint.interfaces.length ||
+      !!entrypoint.services.length ||
+      !!entrypoint.testHarnesses.length ||
+      !!entrypoint.typeAliases.length
+    );
   }
 
   /**
@@ -199,19 +213,30 @@ export class EntryPointGrouper implements Processor {
   private _getDocumentEntryPoint(doc: Document): NgEntryPoint | never {
     const basePath: string = doc.fileInfo.basePath;
     const filePath: string = doc.fileInfo.filePath;
-    const relativeFilePath = path.relative(basePath, filePath).replace(/\\/g, '/');
+    const relativeFilePath = path
+      .relative(basePath, filePath)
+      .replace(/\\/g, '/');
     const foundEntryPoint = this._findMatchingEntryPoint(relativeFilePath);
 
     if (!foundEntryPoint) {
-      throw Error(`Could not determine entry-point for: ${doc.name} in ${basePath}`);
+      throw Error(
+        `Could not determine entry-point for: ${doc.name} in ${basePath}`
+      );
     }
 
     return foundEntryPoint;
   }
 
   /** Finds the matching entry-point of the given file path. */
-  private _findMatchingEntryPoint(relativeFilePath: string): NgEntryPoint | null {
-    return this.entryPoints.find(ep => relativeFilePath.startsWith(path.basename(ep.basePath)))
-      || this.entryPoints.find(ep => ep.isSecondaryEntryPoint === false) || null;
+  private _findMatchingEntryPoint(
+    relativeFilePath: string
+  ): NgEntryPoint | null {
+    return (
+      this.entryPoints.find((ep) =>
+        relativeFilePath.startsWith(path.basename(ep.basePath))
+      ) ||
+      this.entryPoints.find((ep) => ep.isSecondaryEntryPoint === false) ||
+      null
+    );
   }
 }

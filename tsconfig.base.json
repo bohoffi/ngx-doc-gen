@@ -32,6 +32,9 @@
       ],
       "@single": [
         "libs/single-entrypoint/src/index.ts"
+      ],
+      "@standalone/api": [
+        "libs/standalone-api/src/index.ts"
       ]
     }
   },

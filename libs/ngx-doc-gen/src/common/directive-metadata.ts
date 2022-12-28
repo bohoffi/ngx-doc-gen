@@ -1,5 +1,6 @@
 import {
   ArrayLiteralExpression,
+  BooleanLiteral,
   CallExpression,
   getDecorators,
   isCallExpression,
@@ -27,21 +28,30 @@ import { CategorizedClassDoc } from './dgeni-definitions';
  * export class MyComponent {}
  * ```
  */
-export function getDirectiveMetadata(classDoc: CategorizedClassDoc): Map<string, any> | null {
+export function getDirectiveMetadata(
+  classDoc: CategorizedClassDoc
+): Map<string, any> | null {
   const declaration = classDoc.symbol.valueDeclaration;
-  const decorators = declaration && isClassDeclaration(declaration) ? getDecorators(declaration) : null;
+  const decorators =
+    declaration && isClassDeclaration(declaration)
+      ? getDecorators(declaration)
+      : null;
 
-  if (decorators?.length) {
+  if (!decorators?.length) {
     return null;
   }
 
   const expression = decorators
-    .filter(decorator => decorator.expression && isCallExpression(decorator.expression))
-    .map(decorator => decorator.expression as CallExpression)
+    .filter(
+      (decorator) =>
+        decorator.expression && isCallExpression(decorator.expression)
+    )
+    .map((decorator) => decorator.expression as CallExpression)
     .find(
-      callExpression =>
+      (callExpression) =>
         callExpression.expression.getText() === 'Component' ||
-        callExpression.expression.getText() === 'Directive',
+        callExpression.expression.getText() === 'Directive' ||
+        callExpression.expression.getText() === 'Pipe'
     );
 
   if (!expression) {
@@ -57,24 +67,40 @@ export function getDirectiveMetadata(classDoc: CategorizedClassDoc): Map<string,
   const objectExpression = expression.arguments[0] as ObjectLiteralExpression;
   const resultMetadata = new Map<string, any>();
 
-  (objectExpression.properties as NodeArray<PropertyAssignment>).forEach(prop => {
-    // Support ArrayLiteralExpression assignments in the directive metadata.
-    if (prop.initializer.kind === SyntaxKind.ArrayLiteralExpression) {
-      const arrayData = (prop.initializer as ArrayLiteralExpression).elements.map(
-        literal => (literal as StringLiteral).text,
-      );
+  (objectExpression.properties as NodeArray<PropertyAssignment>).forEach(
+    (prop) => {
+      // Support ArrayLiteralExpression assignments in the directive metadata.
+      if (prop.initializer.kind === SyntaxKind.ArrayLiteralExpression) {
+        const arrayData = (
+          prop.initializer as ArrayLiteralExpression
+        ).elements.map((literal) => (literal as StringLiteral).text);
 
-      resultMetadata.set(prop.name.getText(), arrayData);
-    }
+        resultMetadata.set(prop.name.getText(), arrayData);
+      }
 
-    // Support normal StringLiteral and NoSubstitutionTemplateLiteral assignments
-    if (
-      prop.initializer.kind === SyntaxKind.StringLiteral ||
-      prop.initializer.kind === SyntaxKind.NoSubstitutionTemplateLiteral
-    ) {
-      resultMetadata.set(prop.name.getText(), (prop.initializer as StringLiteral).text);
+      // Support normal StringLiteral and NoSubstitutionTemplateLiteral assignments
+      if (
+        prop.initializer.kind === SyntaxKind.StringLiteral ||
+        prop.initializer.kind === SyntaxKind.NoSubstitutionTemplateLiteral
+      ) {
+        resultMetadata.set(
+          prop.name.getText(),
+          (prop.initializer as StringLiteral).text
+        );
+      }
+
+      // Support BooleanLiteral assignments
+      if (
+        prop.initializer.kind === SyntaxKind.TrueKeyword ||
+        prop.initializer.kind === SyntaxKind.FalseKeyword
+      ) {
+        resultMetadata.set(
+          prop.name.getText(),
+          prop.initializer.kind === SyntaxKind.TrueKeyword
+        );
+      }
     }
-  });
+  );
 
   return resultMetadata;
 }
