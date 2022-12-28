@@ -50,7 +50,8 @@
             "name": "example"
           }
         ],
-        "outputPath": "./dist/docs"
+        "outputPath": "./dist/docs",
+        "templates": "./templates"
       }
     }
   },
