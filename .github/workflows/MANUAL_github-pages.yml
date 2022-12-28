@@ -28,7 +28,7 @@ jobs:
       with:
         path: docs
 
-  deplay:
+  deploy:
     name: Deploys the artifact to Github Pages
     runs-on: ubuntu-latest
 
