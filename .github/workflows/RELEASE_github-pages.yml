@@ -1,4 +1,4 @@
-name: Github Pages Deployment
+name: Release - Github Pages Deployment
 
 on:
   release:

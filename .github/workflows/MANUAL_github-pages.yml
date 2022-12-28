@@ -1,0 +1,33 @@
+name: Manual Github Pages Deployment
+
+on: workflow_dispatch
+
+jobs:
+  deployment:
+    name: Build and deploy to Github Pages
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    
+    - name: Setup node
+      uses: actions/setup-node@v2
+      with:
+        node-version: "16"
+        cache: "npm"
+    
+    - name: Install dependencies
+      run: npm i
+      
+    - name: Build the docs
+      run: npm run docs
+    
+    - name: Upload Artifacts
+      uses: actions/upload-pages-artifact@v1
+      with:
+        path: docs
+    
+    - name: Deploy Github Pages
+      uses: actions/deploy-pages@v1
+      
