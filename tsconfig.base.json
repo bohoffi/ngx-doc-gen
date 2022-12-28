@@ -35,6 +35,9 @@
       ],
       "@standalone/api": [
         "libs/standalone-api/src/index.ts"
+      ],
+      "ngx-doc-gen/builder/domain": [
+        "libs/builder/domain/src/index.ts"
       ]
     }
   },
