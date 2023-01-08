@@ -40,6 +40,13 @@ const ROUTES: Routes = [
     path: 'standalone-api',
     component: StandaloneApiComponent,
   },
+  {
+    path: 'template-builder',
+    loadComponent: () =>
+      import('ngx-doc-gen/builder/template').then(
+        (resolved) => resolved.TemplateListComponent
+      ),
+  },
 ];
 
 @NgModule({
