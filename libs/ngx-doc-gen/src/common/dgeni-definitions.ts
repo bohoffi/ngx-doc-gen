@@ -40,7 +40,7 @@ export interface CategorizedClassDoc
   directiveExportAs?: string | null;
   directiveSelectors?: string[];
   pipeName?: string;
-  directiveMetadata: Map<string, any> | null;
+  directiveMetadata: Map<string, string> | null;
   extendedDoc: ClassLikeExportDoc | undefined;
   inheritedDocs: ClassLikeExportDoc[];
 }

@@ -1,7 +1,7 @@
 import { Directive } from '@angular/core';
 
 @Directive({
-  selector: '[ngxDocGenStandaloneApi]',
+  selector: '[ngxDocGenStandaloneApi], test[test]',
   standalone: true,
 })
 export class StandaloneApiDirective {}
