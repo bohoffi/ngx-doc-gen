@@ -9,6 +9,7 @@
     "projects": {
       "description": "Which libraries should get configured.",
       "type": "array",
+      "default": [],
       "items": {
         "type": "string"
       }
