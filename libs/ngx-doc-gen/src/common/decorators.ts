@@ -66,36 +66,32 @@ export function isPrimaryExportDoc(doc: ApiDoc): boolean {
   return hasJsDocTag(doc, 'docs-primary-export');
 }
 
+/**
+ * Gets the stored metadata value by name.
+ * @returns stored metadata or `undefined`
+ */
+function getMetadata(
+  classDoc: CategorizedClassDoc,
+  name: string
+): string | undefined {
+  return classDoc.directiveMetadata.get(name)?.replace(/[\r\n']/g, '');
+}
+
 export function getDirectiveSelectors(
   classDoc: CategorizedClassDoc
 ): string[] | undefined {
-  if (classDoc.directiveMetadata) {
-    const directiveSelectors: string =
-      classDoc.directiveMetadata.get('selector');
-
-    if (directiveSelectors) {
-      return directiveSelectors
-        .replace(/[\r\n]/g, '')
-        .split(/\s*,\s*/)
-        .filter((s) => s !== '');
-    }
-  }
-  return undefined;
+  return getMetadata(classDoc, 'selector')
+    ?.split(/\s*,\s*/)
+    ?.filter((s) => s !== '');
 }
 
 export function getPipeName(classDoc: CategorizedClassDoc): string | undefined {
-  if (classDoc.directiveMetadata) {
-    return classDoc.directiveMetadata.get('name');
-  }
-  return undefined;
+  return getMetadata(classDoc, 'name');
 }
 
 export function isStandalone(classDoc: CategorizedClassDoc): boolean {
-  if (classDoc.directiveMetadata) {
-    const standalone = classDoc.directiveMetadata.get('standalone');
-    return standalone != null && `${standalone}` !== 'false';
-  }
-  return false;
+  const standalone = getMetadata(classDoc, 'standalone');
+  return standalone !== undefined && `${standalone}` !== 'false';
 }
 
 export function hasMemberDecorator(
