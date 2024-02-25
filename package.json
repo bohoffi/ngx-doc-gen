@@ -80,10 +80,10 @@
     "@nx/devkit": "18.0.5",
     "@nx/workspace": "18.0.5",
     "@nx/cypress": "18.0.5",
-    "@nx/linter": "18.0.5",
     "@nx/js": "18.0.5",
     "@nx/eslint-plugin": "18.0.5",
-    "@nx/jest": "18.0.5"
+    "@nx/jest": "18.0.5",
+    "@nx/eslint": "18.0.5"
   },
   "overrides": {
     "dgeni-packages": {
@@ -91,4 +91,3 @@
     }
   }
 }
-
