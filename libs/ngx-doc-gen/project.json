@@ -6,9 +6,7 @@
   "targets": {
     "build": {
       "executor": "@nx/js:tsc",
-      "outputs": [
-        "{options.outputPath}"
-      ],
+      "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/libs/ngx-doc-gen",
         "tsConfig": "libs/ngx-doc-gen/tsconfig.lib.json",
@@ -29,9 +27,7 @@
             "input": "./libs/ngx-doc-gen/src",
             "glob": "**/!(*.ts)",
             "output": "./src",
-            "ignore": [
-              "**/*.ts"
-            ]
+            "ignore": ["**/*.ts"]
           },
           {
             "input": "./libs/ngx-doc-gen/src",
@@ -53,26 +49,19 @@
             "glob": "generators.json",
             "output": "."
           }
-        ],
-        "updateBuildableProjectDepsInPackageJson": true
+        ]
       }
     },
     "lint": {
       "executor": "@nx/linter:eslint",
-      "outputs": [
-        "{options.outputFile}"
-      ],
+      "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": [
-          "libs/ngx-doc-gen/**/*.ts"
-        ]
+        "lintFilePatterns": ["libs/ngx-doc-gen/**/*.ts"]
       }
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": [
-        "{workspaceRoot}/coverage/libs/ngx-doc-gen"
-      ],
+      "outputs": ["{workspaceRoot}/coverage/libs/ngx-doc-gen"],
       "options": {
         "jestConfig": "libs/ngx-doc-gen/jest.config.ts"
       }
