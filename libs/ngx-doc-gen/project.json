@@ -60,12 +60,7 @@
       "executor": "@nx/eslint:lint",
       "outputs": [
         "{options.outputFile}"
-      ],
-      "options": {
-        "lintFilePatterns": [
-          "libs/ngx-doc-gen/**/*.ts"
-        ]
-      }
+      ]
     },
     "test": {
       "executor": "@nx/jest:jest",
