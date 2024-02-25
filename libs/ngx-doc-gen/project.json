@@ -73,7 +73,8 @@
         "{workspaceRoot}/coverage/libs/ngx-doc-gen"
       ],
       "options": {
-        "jestConfig": "libs/ngx-doc-gen/jest.config.ts"
+        "jestConfig": "libs/ngx-doc-gen/jest.config.ts",
+        "passWithNoTests": false
       }
     }
   },

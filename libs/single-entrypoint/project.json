@@ -29,8 +29,7 @@
         "{workspaceRoot}/coverage/libs/single-entrypoint"
       ],
       "options": {
-        "jestConfig": "libs/single-entrypoint/jest.config.ts",
-        "passWithNoTests": true
+        "jestConfig": "libs/single-entrypoint/jest.config.ts"
       }
     },
     "lint": {

@@ -29,8 +29,7 @@
         "{workspaceRoot}/coverage/libs/multi-entrypoint"
       ],
       "options": {
-        "jestConfig": "libs/multi-entrypoint/jest.config.ts",
-        "passWithNoTests": true
+        "jestConfig": "libs/multi-entrypoint/jest.config.ts"
       }
     },
     "lint": {

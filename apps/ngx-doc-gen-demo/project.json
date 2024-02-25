@@ -92,8 +92,7 @@
         "{workspaceRoot}/coverage/apps/ngx-doc-gen-demo"
       ],
       "options": {
-        "jestConfig": "apps/ngx-doc-gen-demo/jest.config.ts",
-        "passWithNoTests": true
+        "jestConfig": "apps/ngx-doc-gen-demo/jest.config.ts"
       }
     }
   },
