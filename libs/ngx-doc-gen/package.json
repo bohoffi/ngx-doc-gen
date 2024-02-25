@@ -31,7 +31,6 @@
   },
   "homepage": "https://github.com/bohoffi/ngx-doc-gen#readme",
   "dependencies": {
-    "@nrwl/devkit": ">= 13.0.0",
     "canonical-path": "^1.0.0",
     "dgeni": "^0.4.14",
     "dgeni-packages": "^0.30.0",
@@ -39,7 +38,8 @@
     "fs-extra": "^10.1.0",
     "highlight.js": "^11.5.1",
     "jsonc-parser": "^3.0.0",
-    "ng-packagr": ">= 13.0.0"
+    "ng-packagr": ">= 13.0.0",
+    "@nx/devkit": ">= 13.0.0"
   },
   "peerDependencies": {
     "typescript": ">=4.8.2"

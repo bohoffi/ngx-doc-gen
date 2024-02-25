@@ -1,4 +1,4 @@
-import { ExecutorContext, logger } from '@nrwl/devkit';
+import { ExecutorContext, logger } from '@nx/devkit';
 
 import { NgxDocGenOptions } from '../../schema/ngx-doc-gen.options';
 import * as engine from '../../generate/dgeni-engine';
