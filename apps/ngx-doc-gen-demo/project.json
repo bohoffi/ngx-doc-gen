@@ -63,10 +63,10 @@
       "executor": "@angular-devkit/build-angular:dev-server",
       "configurations": {
         "production": {
-          "browserTarget": "ngx-doc-gen-demo:build:production"
+          "buildTarget": "ngx-doc-gen-demo:build:production"
         },
         "development": {
-          "browserTarget": "ngx-doc-gen-demo:build:development"
+          "buildTarget": "ngx-doc-gen-demo:build:development"
         }
       },
       "defaultConfiguration": "development"
@@ -74,7 +74,7 @@
     "extract-i18n": {
       "executor": "@angular-devkit/build-angular:extract-i18n",
       "options": {
-        "browserTarget": "ngx-doc-gen-demo:build"
+        "buildTarget": "ngx-doc-gen-demo:build"
       }
     },
     "lint": {
