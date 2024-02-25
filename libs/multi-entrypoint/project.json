@@ -11,8 +11,7 @@
         "{workspaceRoot}/dist/libs/multi-entrypoint"
       ],
       "options": {
-        "project": "libs/multi-entrypoint/ng-package.json",
-        "updateBuildableProjectDepsInPackageJson": true
+        "project": "libs/multi-entrypoint/ng-package.json"
       },
       "configurations": {
         "production": {

@@ -11,8 +11,7 @@
         "{workspaceRoot}/dist/libs/single-entrypoint"
       ],
       "options": {
-        "project": "libs/single-entrypoint/ng-package.json",
-        "updateBuildableProjectDepsInPackageJson": true
+        "project": "libs/single-entrypoint/ng-package.json"
       },
       "configurations": {
         "production": {
