@@ -48,7 +48,6 @@
     "@angular/cli": "~15.2.0",
     "@angular/compiler-cli": "16.2.12",
     "@angular/language-service": "16.2.12",
-    "@nrwl/eslint-plugin-nx": "16.10.0",
     "@nrwl/jest": "16.10.0",
     "@schematics/angular": "16.2.12",
     "@types/fs-extra": "^9.0.13",
@@ -83,7 +82,8 @@
     "@nx/workspace": "16.10.0",
     "@nx/cypress": "16.10.0",
     "@nx/linter": "16.10.0",
-    "@nx/js": "16.10.0"
+    "@nx/js": "16.10.0",
+    "@nx/eslint-plugin": "16.10.0"
   },
   "overrides": {
     "dgeni-packages": {
