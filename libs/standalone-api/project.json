@@ -11,7 +11,8 @@
         "{workspaceRoot}/dist/{projectRoot}"
       ],
       "options": {
-        "project": "libs/standalone-api/ng-package.json"
+        "project": "libs/standalone-api/ng-package.json",
+        "updateBuildableProjectDepsInPackageJson": true
       },
       "configurations": {
         "production": {
