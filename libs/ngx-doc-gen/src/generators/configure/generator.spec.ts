@@ -44,7 +44,7 @@ const createProjectConfig = (
         executor:
           projectType === 'application'
             ? '@angular-devkit/build-angular:browser'
-            : '@nrwl/angular:package',
+            : '@nx/angular:package',
       },
     };
   }
