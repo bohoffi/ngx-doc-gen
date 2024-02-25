@@ -1,4 +1,4 @@
-import { formatFiles, GeneratorCallback, getProjects, logger, Tree, updateProjectConfiguration } from '@nrwl/devkit';
+import { formatFiles, GeneratorCallback, getProjects, logger, Tree, updateProjectConfiguration } from '@nx/devkit';
 import { ConfigureGeneratorOptions } from './configure-generator.options';
 import { createNonExistingProjectsErrorMessage } from './utils';
 

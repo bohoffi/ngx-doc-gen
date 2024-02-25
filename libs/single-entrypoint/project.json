@@ -6,12 +6,13 @@
   "prefix": "ngx-doc-gen",
   "targets": {
     "build": {
-      "executor": "@nrwl/angular:package",
+      "executor": "@nx/angular:package",
       "outputs": [
         "{workspaceRoot}/dist/libs/single-entrypoint"
       ],
       "options": {
-        "project": "libs/single-entrypoint/ng-package.json"
+        "project": "libs/single-entrypoint/ng-package.json",
+        "updateBuildableProjectDepsInPackageJson": true
       },
       "configurations": {
         "production": {
@@ -24,7 +25,7 @@
       "defaultConfiguration": "production"
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
+      "executor": "@nx/jest:jest",
       "outputs": [
         "{workspaceRoot}/coverage/libs/single-entrypoint"
       ],
@@ -34,7 +35,7 @@
       }
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "options": {
         "lintFilePatterns": [
           "libs/single-entrypoint/src/**/*.ts",

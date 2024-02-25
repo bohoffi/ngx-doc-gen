@@ -4,8 +4,8 @@ import {
   ProjectConfiguration,
   ProjectType,
   Tree,
-} from '@nrwl/devkit';
-import { createTreeWithEmptyWorkspace } from '@nrwl/devkit/testing';
+} from '@nx/devkit';
+import { createTreeWithEmptyWorkspace } from '@nx/devkit/testing';
 import { ConfigureGeneratorOptions } from './configure-generator.options';
 import configure from './generator';
 import { createNonExistingProjectsErrorMessage } from './utils';
@@ -44,7 +44,7 @@ const createProjectConfig = (
         executor:
           projectType === 'application'
             ? '@angular-devkit/build-angular:browser'
-            : '@nrwl/angular:package',
+            : '@nx/angular:package',
       },
     };
   }
