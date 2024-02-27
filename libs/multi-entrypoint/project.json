@@ -11,8 +11,7 @@
         "{workspaceRoot}/dist/libs/multi-entrypoint"
       ],
       "options": {
-        "project": "libs/multi-entrypoint/ng-package.json",
-        "updateBuildableProjectDepsInPackageJson": true
+        "project": "libs/multi-entrypoint/ng-package.json"
       },
       "configurations": {
         "production": {
@@ -30,24 +29,11 @@
         "{workspaceRoot}/coverage/libs/multi-entrypoint"
       ],
       "options": {
-        "jestConfig": "libs/multi-entrypoint/jest.config.ts",
-        "passWithNoTests": true
+        "jestConfig": "libs/multi-entrypoint/jest.config.ts"
       }
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
-      "options": {
-        "lintFilePatterns": [
-          "libs/multi-entrypoint/src/**/*.ts",
-          "libs/multi-entrypoint/src/**/*.html",
-          "libs/multi-entrypoint/one/**/*.ts",
-          "libs/multi-entrypoint/one/**/*.html",
-          "libs/multi-entrypoint/two/**/*.ts",
-          "libs/multi-entrypoint/two/**/*.html",
-          "libs/multi-entrypoint/three/**/*.ts",
-          "libs/multi-entrypoint/three/**/*.html"
-        ]
-      }
+      "executor": "@nx/eslint:lint"
     },
     "doc-gen": {
       "executor": "./dist/libs/ngx-doc-gen:generate",

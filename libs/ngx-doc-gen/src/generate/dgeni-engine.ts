@@ -213,7 +213,16 @@ const configureTemplateEngine = (dgeniPackage: Package): void => {
     ];
 
     // Dgeni disables autoescape by default, but we want this turned on.
-    templateEngine.config.autoescape = true;
+    templateEngine.config.autoescape = false;
+    templateEngine.filters = [
+      ...templateEngine.filters,
+      {
+        name: 'escape',
+        process: (input: any) => {
+          return input.replace(/@/g, '&#64;');
+        },
+      },
+    ];
 
     // Nunjucks and Angular conflict in their template bindings so change Nunjucks
     templateEngine.config.tags = {

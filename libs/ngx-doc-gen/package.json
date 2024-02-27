@@ -1,6 +1,6 @@
 {
   "name": "ngx-doc-gen",
-  "version": "2.3.0",
+  "version": "2.4.0",
   "description": "Automagically generate your Angular documentation.",
   "builders": "./executors.json",
   "executors": "./executors.json",

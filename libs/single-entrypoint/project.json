@@ -11,8 +11,7 @@
         "{workspaceRoot}/dist/libs/single-entrypoint"
       ],
       "options": {
-        "project": "libs/single-entrypoint/ng-package.json",
-        "updateBuildableProjectDepsInPackageJson": true
+        "project": "libs/single-entrypoint/ng-package.json"
       },
       "configurations": {
         "production": {
@@ -30,18 +29,11 @@
         "{workspaceRoot}/coverage/libs/single-entrypoint"
       ],
       "options": {
-        "jestConfig": "libs/single-entrypoint/jest.config.ts",
-        "passWithNoTests": true
+        "jestConfig": "libs/single-entrypoint/jest.config.ts"
       }
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
-      "options": {
-        "lintFilePatterns": [
-          "libs/single-entrypoint/src/**/*.ts",
-          "libs/single-entrypoint/src/**/*.html"
-        ]
-      }
+      "executor": "@nx/eslint:lint"
     },
     "doc-gen": {
       "executor": "./dist/libs/ngx-doc-gen:generate",

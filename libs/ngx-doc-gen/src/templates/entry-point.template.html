@@ -11,17 +11,17 @@ macro constant(constant) -%} {% include 'constant.template.html' %} {% endmacro
 %}
 
 <div class="docs-api">
-  <h2>API reference for {$ doc.displayName $}</h2>
+  <h2>API reference for {$ doc.displayName | escape $}</h2>
 
   {%- if doc.primaryExportName -%}
   <p class="docs-api-module-import">
     <code>
       import &#123; {$ doc.primaryExportName $} &#125; from '{$
-      doc.moduleImportPath $}';
+      doc.moduleImportPath | escape $}';
     </code>
   </p>
   {% else %}
-  <p>Import symbols from <code>{$ doc.moduleImportPath $}</code></p>
+  <p>Import symbols from <code>{$ doc.moduleImportPath | escape $}</code></p>
   {%- endif -%} {%- if doc.services.length -%}
   <h3 id="{$ doc.name $}-services" class="docs-header-link docs-api-h3">
     <span header-link="services"></span>
